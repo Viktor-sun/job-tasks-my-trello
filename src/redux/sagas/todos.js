@@ -1,4 +1,4 @@
-import { put, takeEvery, call, all } from "redux-saga/effects";
+import { put, takeEvery, call } from "redux-saga/effects";
 import { todosActions } from "../actions";
 
 const fetchT = () =>
@@ -15,8 +15,4 @@ export function* fetchTodosWorker() {
 
 export function* todosWatcher() {
   yield takeEvery(todosActions.fetchTodos.Request.type, fetchTodosWorker);
-}
-
-export function* rootSagas() {
-  yield all([todosWatcher()]);
 }

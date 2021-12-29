@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import routes from "../../routes";
+import { boardActions } from "../../redux/actions";
 
 const FormCreateBoard = () => {
-  const [inputValue, setInputValue] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setInputValue(e.currentTarget.value);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(e);
+    dispatch(boardActions.changeTitle.Request(inputValue));
     navigate(routes.board);
   };
 
