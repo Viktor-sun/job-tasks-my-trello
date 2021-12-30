@@ -8,9 +8,10 @@ import { todosActions } from "../redux/actions";
 const Home = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-  const toggleModal = () => setShowModal((prevShowModal) => !prevShowModal);
 
-  const handleClick = () => toggleModal();
+  const handleClick = () => {
+    setShowModal((prevShowModal) => !prevShowModal);
+  };
 
   return (
     <div>
@@ -23,7 +24,7 @@ const Home = () => {
         fetch todo
       </button>
       {showModal && (
-        <Modal onCloseModal={toggleModal}>
+        <Modal onCloseModal={handleClick}>
           <FormCreateBoard />
         </Modal>
       )}

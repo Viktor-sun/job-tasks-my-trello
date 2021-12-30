@@ -41,9 +41,9 @@ const FormCreateBoard = () => {
           onChange={formik.handleChange}
           value={formik.values.title}
         />
-        {formik.errors.title && formik.touched.title ? (
+        {formik.errors.title && formik.touched.title && (
           <div style={{ color: "red" }}>{formik.errors.title}</div>
-        ) : null}
+        )}
       </label>
       <button type="submit">submit</button>
     </form>

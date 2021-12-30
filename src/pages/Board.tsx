@@ -9,18 +9,14 @@ import { boardSelectors } from "../redux/selectors";
 const Board = () => {
   const [showForm, setShowForm] = useState(false);
   const { title, bgColor } = useSelector(boardSelectors.getBoardsDetails);
+
   const toggleShowForm = () => {
     setShowForm((prevShow) => !prevShow);
   };
 
-  const Wrapper = styled.div`
-    height: 100vh;
-    background-color: ${bgColor};
-  `;
-
   return (
-    <Wrapper>
-      <h1>board {title}</h1>
+    <Wrapper bgColor={bgColor}>
+      <Title>board {title}</Title>
       <button type="button" onClick={toggleShowForm}>
         add todo list
       </button>
@@ -29,5 +25,19 @@ const Board = () => {
     </Wrapper>
   );
 };
+
+type WrapperProps = {
+  bgColor: string;
+};
+
+const Wrapper = styled.div<WrapperProps>`
+  height: 100vh;
+
+  ${({ bgColor }: WrapperProps) => `background-color: ${bgColor}`}
+`;
+
+const Title = styled.div`
+  font-size: 50px;
+`;
 
 export default Board;

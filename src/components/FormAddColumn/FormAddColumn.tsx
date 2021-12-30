@@ -10,6 +10,7 @@ interface IProps {
 const FormAddList = ({ onCloseForm }: IProps) => {
   const dispatch = useDispatch();
   const [inputValue, setInputvalue] = useState("");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setInputvalue(e.currentTarget.value);
 

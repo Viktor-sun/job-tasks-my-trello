@@ -5,7 +5,9 @@ import { boardSelectors } from "../redux/selectors";
 const Card = () => {
   const params = useParams();
   const navigate = useNavigate();
+
   const cards = useSelector(boardSelectors.getCards);
+
   const card = cards.find((card) => card.id === params.cardId);
 
   return (

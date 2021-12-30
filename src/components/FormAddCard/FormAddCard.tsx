@@ -11,6 +11,7 @@ interface IProps {
 const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
   const dispatch = useDispatch();
   const [cardName, setCardName] = useState("");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setCardName(e.currentTarget.value);
 
