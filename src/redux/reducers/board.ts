@@ -1,15 +1,5 @@
 import { boardActions } from "../actions";
-
-export interface IBoardState {
-  title: string;
-  error: string | null;
-  columns: { id: string; title: string; todo: string }[];
-}
-
-interface IAction<T> {
-  readonly type: string;
-  readonly payload: T;
-}
+import { IBoardState, IAction } from "../../interfaces";
 
 type TActionTypes = string | [];
 

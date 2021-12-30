@@ -1,4 +1,4 @@
-import { IBoardState } from "../reducers/board";
+import { IBoardState } from "../../interfaces";
 
 interface IBoard {
   board: IBoardState;
