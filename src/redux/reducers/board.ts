@@ -1,11 +1,11 @@
 import { boardActions } from "../actions";
 import { IBoardState, IAction } from "../../interfaces";
 
-type TActionTypes = string | [] | {};
+type TAction = [] | {};
 
 const initialState: IBoardState = {
-  title: "",
-  error: null,
+  boardsDetails: { title: "", bgColor: "" },
+
   columns: [
     {
       id: "RoBsqI1kp",
@@ -28,12 +28,13 @@ const initialState: IBoardState = {
       owner: "4w5H6K8vy",
     },
   ],
+  error: null,
 };
 
-const boardReducer = (state = initialState, action: IAction<TActionTypes>) => {
+const boardReducer = (state = initialState, action: IAction<TAction>) => {
   switch (action.type) {
     case boardActions.changeTitle.Success.type:
-      return { ...state, title: action.payload };
+      return { ...state, boardsDetails: action.payload };
 
     case boardActions.createColumn.Success.type:
       return {
