@@ -8,7 +8,7 @@ const Cards = ({ cards }: IProps) => {
   return (
     <ul>
       {cards.map((card) => (
-        <Card key={card.id} title={card.title} />
+        <Card key={card.id} cardId={card.id} title={card.title} />
       ))}
     </ul>
   );

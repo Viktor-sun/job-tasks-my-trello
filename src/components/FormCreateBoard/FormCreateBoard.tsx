@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import routes from "../../routes";
+import { navRoutes } from "../../routes";
 import { boardActions } from "../../redux/actions";
 
 const FormCreateBoard = () => {
@@ -22,7 +22,7 @@ const FormCreateBoard = () => {
     }),
     onSubmit: (values) => {
       dispatch(boardActions.changeTitle.Request(values.title));
-      navigate(routes.board);
+      navigate(navRoutes.board);
       formik.resetForm();
     },
   });

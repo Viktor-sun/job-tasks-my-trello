@@ -51,6 +51,8 @@ const boardReducer = (state = initialState, action: IAction<TActionTypes>) => {
       return { ...state, error: action.payload };
     case boardActions.createColumn.Error.type:
       return { ...state, error: action.payload };
+    case boardActions.addCard.Error.type:
+      return { ...state, error: action.payload };
     default:
       return state;
   }
