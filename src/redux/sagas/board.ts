@@ -19,7 +19,16 @@ export function* createListWorker(action: IAction<string>) {
   }
 }
 
+export function* addCardWorker(action: IAction<string>) {
+  try {
+    yield put(boardActions.addCard.Success(action.payload));
+  } catch (error: any) {
+    yield put(boardActions.addCard.Error(error.message));
+  }
+}
+
 export function* boardWatcher() {
   yield takeEvery(boardActions.changeTitle.Request.type, changeTitleWorker);
   yield takeEvery(boardActions.createColumn.Request.type, createListWorker);
+  yield takeEvery(boardActions.addCard.Request.type, addCardWorker);
 }

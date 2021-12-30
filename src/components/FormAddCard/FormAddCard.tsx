@@ -5,20 +5,22 @@ import { boardActions } from "../../redux/actions";
 
 interface IProps {
   onCloseForm: () => void;
+  columnId: string;
 }
 
-const FormAddList = ({ onCloseForm }: IProps) => {
+const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
   const dispatch = useDispatch();
-  const [inputValue, setInputvalue] = useState("");
+  const [cardName, setCardName] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setInputvalue(e.currentTarget.value);
+    setCardName(e.currentTarget.value);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
-      boardActions.createColumn.Request({
+      boardActions.addCard.Request({
         id: shortid.generate(),
-        title: inputValue,
+        title: cardName,
+        owner: columnId,
       })
     );
     onCloseForm();
@@ -27,9 +29,9 @@ const FormAddList = ({ onCloseForm }: IProps) => {
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        <input type="text" onChange={handleChange} value={inputValue} />
+        <input type="text" onChange={handleChange} value={cardName} />
       </label>
-      <button type="submit">add list</button>
+      <button type="submit">add card</button>
       <button type="button" onClick={onCloseForm}>
         close
       </button>
@@ -37,4 +39,4 @@ const FormAddList = ({ onCloseForm }: IProps) => {
   );
 };
 
-export default FormAddList;
+export default FormAddCard;
