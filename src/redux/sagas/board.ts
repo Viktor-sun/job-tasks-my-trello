@@ -11,7 +11,7 @@ export function* changeTitleWorker(action: IAction<string>) {
   }
 }
 
-export function* createListWorker(action: IAction<string>) {
+export function* createColumnWorker(action: IAction<string>) {
   try {
     yield put(boardActions.createColumn.Success(action.payload));
   } catch (error: any) {
@@ -27,8 +27,38 @@ export function* addCardWorker(action: IAction<string>) {
   }
 }
 
+export function* deleteColumnWorker(action: IAction<string>) {
+  try {
+    yield put(boardActions.deleteColumn.Success(action.payload));
+  } catch (error: any) {
+    yield put(boardActions.deleteColumn.Error(error.message));
+  }
+}
+
+export function* deleteCardWorker(action: IAction<string>) {
+  try {
+    yield put(boardActions.deleteCard.Success(action.payload));
+  } catch (error: any) {
+    yield put(boardActions.deleteCard.Error(error.message));
+  }
+}
+
+export function* changeCardTitleWorker(action: IAction<string>) {
+  try {
+    yield put(boardActions.changeCardTitle.Success(action.payload));
+  } catch (error: any) {
+    yield put(boardActions.changeCardTitle.Error(error.message));
+  }
+}
+
 export function* boardWatcher() {
   yield takeEvery(boardActions.changeTitle.Request.type, changeTitleWorker);
-  yield takeEvery(boardActions.createColumn.Request.type, createListWorker);
+  yield takeEvery(boardActions.createColumn.Request.type, createColumnWorker);
   yield takeEvery(boardActions.addCard.Request.type, addCardWorker);
+  yield takeEvery(boardActions.deleteColumn.Request.type, deleteColumnWorker);
+  yield takeEvery(boardActions.deleteCard.Request.type, deleteCardWorker);
+  yield takeEvery(
+    boardActions.changeCardTitle.Request.type,
+    changeCardTitleWorker
+  );
 }

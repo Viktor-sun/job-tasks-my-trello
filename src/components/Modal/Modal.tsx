@@ -1,6 +1,8 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const DELAY = 350;
 
 interface IProps {
   children?: JSX.Element | JSX.Element[];
@@ -8,29 +10,33 @@ interface IProps {
 }
 
 const Modal = ({ children, onCloseModal }: IProps) => {
-  // useEffect(() => {
-  //   const handleKeyDown = (e) => {
-  //     if (e.code === "Escape") {
-  //       onCloseModal();
-  //     }
-  //   };
+  const [goAnimation, setGoAnimation] = useState(false);
 
-  //   window.addEventListener("keydown", handleKeyDown);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === "Escape") {
+        setGoAnimation((prev) => !prev);
+        setTimeout(() => onCloseModal(), DELAY);
+      }
+    };
 
-  //   return () => {
-  //     window.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // }, [onCloseModal]);
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onCloseModal]);
 
   const handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      onCloseModal();
+      setGoAnimation((prev) => !prev);
+      setTimeout(() => onCloseModal(), DELAY);
     }
   };
 
   return createPortal(
     <Backdrop onClick={handleBackdropClick}>
-      <Content>{children}</Content>
+      <Content goAnimation={goAnimation}>{children}</Content>
     </Backdrop>,
     document.getElementById("modal-root") as HTMLElement
   );
@@ -45,18 +51,38 @@ const Backdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-const Content = styled.div`
+const openModal = keyframes`
+      0% { opacity: .2; }
+      25% { opacity: .4; }
+      50% { opacity: .6; }
+      75% { opacity: .8; }
+      100% {  opacity: .9; }`;
+
+const closeModal = keyframes`
+      0% { opacity: .9; }
+      25% { opacity: .8; }
+      50% { opacity: .6; }
+      75% { opacity: .4; }
+      100% {  opacity: .2; }`;
+
+type TContentProps = {
+  goAnimation: boolean;
+};
+
+const Content = styled.div<TContentProps>`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #ffffff;
   max-width: 600px;
-  width: 100%;
   padding: 12px;
-  border-radius: 3px;
+  border-radius: 8px;
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+
+  animation: ${({ goAnimation }) => (goAnimation ? closeModal : openModal)}
+    ${DELAY}ms ease-in-out;
 `;
 
 export default Modal;

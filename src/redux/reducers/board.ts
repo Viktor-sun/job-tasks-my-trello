@@ -1,10 +1,66 @@
 import { boardActions } from "../actions";
 import { IBoardState, IAction } from "../../interfaces";
 
-type TAction = [] | {};
+// interface IChangeTitle {
+//   readonly type: string;
+//   readonly payload: {
+//     title: string;
+//     bgColor: string;
+//   };
+// }
+
+// interface ICreateColumn {
+//   readonly type: string;
+//   readonly payload: {
+//     id: string;
+//     title: string;
+//   };
+// }
+
+// interface IAddCard {
+//   readonly type: string;
+//   readonly payload: {
+//     id: string;
+//     title: string;
+//     owner: string;
+//   };
+// }
+
+// interface IDeleteColumn {
+//   readonly type: string;
+//   readonly payload: { columnId: string };
+// }
+
+// interface IDeleteCard {
+//   readonly type: string;
+//   readonly payload: { cardId: string };
+// }
+
+// interface IChangeCardTitle {
+//   readonly type: string;
+//   readonly payload: {
+//     id: string;
+//     title: string;
+//   };
+// }
+
+// type TAction =
+//   | IChangeTitle
+//   | ICreateColumn
+//   | IAddCard
+//   | IDeleteColumn
+//   | IDeleteCard
+//   | IChangeCardTitle;
+
+interface IReducerExtends {
+  columnId: string;
+  cardId: string;
+  id: string;
+  title: string;
+}
 
 const initialState: IBoardState = {
-  boardsDetails: { title: "", bgColor: "" },
+  boardsDetails: { title: "", bgColor: "#aabbcc" },
 
   columns: [
     {
@@ -31,7 +87,10 @@ const initialState: IBoardState = {
   error: null,
 };
 
-const boardReducer = (state = initialState, action: IAction<TAction>) => {
+const boardReducer = <A extends IReducerExtends>(
+  state = initialState,
+  action: IAction<A>
+) => {
   switch (action.type) {
     case boardActions.changeTitle.Success.type:
       return { ...state, boardsDetails: action.payload };
@@ -48,11 +107,38 @@ const boardReducer = (state = initialState, action: IAction<TAction>) => {
         cards: [...state.cards, action.payload],
       };
 
+    case boardActions.deleteColumn.Success.type:
+      return {
+        ...state,
+        columns: state.columns.filter(
+          (column) => column.id !== action.payload.columnId
+        ),
+      };
+
+    case boardActions.deleteCard.Success.type:
+      return {
+        ...state,
+        cards: state.cards.filter((card) => card.id !== action.payload.cardId),
+      };
+
+    case boardActions.changeCardTitle.Success.type:
+      const idx = state.cards.findIndex(
+        (card) => card.id === action.payload.id
+      );
+      const newCards = [...state.cards];
+      newCards[idx].title = action.payload.title;
+      return {
+        ...state,
+        cards: newCards,
+      };
+
     case boardActions.changeTitle.Error.type:
       return { ...state, error: action.payload };
     case boardActions.createColumn.Error.type:
       return { ...state, error: action.payload };
     case boardActions.addCard.Error.type:
+      return { ...state, error: action.payload };
+    case boardActions.deleteColumn.Error.type:
       return { ...state, error: action.payload };
     default:
       return state;

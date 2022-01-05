@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import shortid from "shortid";
 import { boardActions } from "../../redux/actions";
+import { Button, Input, Label } from "../../assets/styles/styledComponents";
 
 interface IProps {
   onCloseForm: () => void;
@@ -29,13 +30,25 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        <input type="text" onChange={handleChange} value={cardName} />
-      </label>
-      <button type="submit">add card</button>
-      <button type="button" onClick={onCloseForm}>
+      <Label>
+        <Input
+          type="text"
+          onChange={handleChange}
+          value={cardName}
+          placeholder="Enter title"
+        />
+      </Label>
+      <Button fontSize="15px" padding="10px 15px" type="submit">
+        add card
+      </Button>
+      <Button
+        fontSize="15px"
+        padding="10px 15px"
+        type="button"
+        onClick={onCloseForm}
+      >
         close
-      </button>
+      </Button>
     </form>
   );
 };

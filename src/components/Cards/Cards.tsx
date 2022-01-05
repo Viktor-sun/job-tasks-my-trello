@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import Card from "../Card";
 
 interface IProps {
@@ -6,12 +7,18 @@ interface IProps {
 
 const Cards = ({ cards }: IProps) => {
   return (
-    <ul>
+    <List>
       {cards.map((card) => (
         <Card key={card.id} cardId={card.id} title={card.title} />
       ))}
-    </ul>
+    </List>
   );
 };
+
+const List = styled.ul`
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+`;
 
 export default Cards;

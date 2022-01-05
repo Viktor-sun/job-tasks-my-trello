@@ -1,12 +1,10 @@
 import { useState } from "react";
+import styled from "styled-components";
 import Modal from "../components/Modal";
 import FormCreateBoard from "../components/FormCreateBoard";
-
-import { useDispatch } from "react-redux";
-import { todosActions } from "../redux/actions";
+import { Title, Button } from "../assets/styles/styledComponents";
 
 const Home = () => {
-  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 
   const handleClick = () => {
@@ -14,22 +12,23 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>hello</h1>
-      <button onClick={handleClick}>create new board</button>
-      <button
-        type="button"
-        onClick={() => dispatch(todosActions.fetchTodos.Request())}
-      >
-        fetch todo
-      </button>
+    <Wrapper>
+      <Title>hello</Title>
+      <Button onClick={handleClick}>create new board</Button>
+
       {showModal && (
         <Modal onCloseModal={handleClick}>
           <FormCreateBoard />
         </Modal>
       )}
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  margin: auto;
+  max-width: 500px;
+  text-align: center;
+`;
 
 export default Home;

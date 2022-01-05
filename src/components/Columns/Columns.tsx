@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import shortid from "shortid";
 import Column from "../Column";
 import { boardSelectors } from "../../redux/selectors";
 
@@ -10,7 +9,7 @@ const Columns = () => {
   return (
     <ColumnsWrapper>
       {columns.map((column) => (
-        <Column key={shortid.generate()} id={column.id} title={column.title} />
+        <Column key={column.id} id={column.id} title={column.title} />
       ))}
     </ColumnsWrapper>
   );
@@ -18,7 +17,7 @@ const Columns = () => {
 
 const ColumnsWrapper = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
 `;
 
 export default Columns;

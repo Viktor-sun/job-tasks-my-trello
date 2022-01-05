@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import FormAddList from "../components/FormAddColumn";
 import Columns from "../components/Columns";
+import { Title, Button, PageWrapper } from "../assets/styles/styledComponents";
 
 import { boardSelectors } from "../redux/selectors";
 
@@ -15,29 +16,24 @@ const Board = () => {
   };
 
   return (
-    <Wrapper bgColor={bgColor}>
-      <Title>board {title}</Title>
-      <button type="button" onClick={toggleShowForm}>
-        add todo list
-      </button>
-      {showForm && <FormAddList onCloseForm={toggleShowForm} />}
-      <Columns />
-    </Wrapper>
+    <PageWrapper bgColor={bgColor}>
+      <Container>
+        <Title>board {title}</Title>
+        {showForm && <FormAddList onCloseForm={toggleShowForm} />}
+        {!showForm && (
+          <Button type="button" onClick={toggleShowForm}>
+            add todo list
+          </Button>
+        )}
+        <Columns />
+      </Container>
+    </PageWrapper>
   );
 };
 
-type WrapperProps = {
-  bgColor: string;
-};
-
-const Wrapper = styled.div<WrapperProps>`
-  height: 100vh;
-
-  ${({ bgColor }: WrapperProps) => `background-color: ${bgColor}`}
-`;
-
-const Title = styled.div`
-  font-size: 50px;
+const Container = styled.div`
+  margin: auto;
+  max-width: 1280px;
 `;
 
 export default Board;

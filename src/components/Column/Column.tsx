@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import FormAddCard from "../FormAddCard";
 import Cards from "../Cards";
 import { boardSelectors } from "../../redux/selectors";
+import { boardActions } from "../../redux/actions";
+import { Button } from "../../assets/styles/styledComponents";
+import styled from "styled-components";
 
 interface IProps {
   id: string;
@@ -10,6 +13,7 @@ interface IProps {
 }
 
 const Column = ({ id, title }: IProps) => {
+  const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
   const cards = useSelector(boardSelectors.getCards).filter(
     (card) => card.owner === id
@@ -21,16 +25,50 @@ const Column = ({ id, title }: IProps) => {
 
   const handleClik = () => toggleShowForm();
 
+  const handleDeleteColumn = () => {
+    dispatch(boardActions.deleteColumn.Request({ columnId: id }));
+  };
+
   return (
-    <div>
-      <h2>{title}</h2>
-      <button type="button" onClick={handleClik}>
-        add card
-      </button>
+    <Wrapper>
+      <ButtonDelete type="button" onClick={handleDeleteColumn}>
+        X
+      </ButtonDelete>
+      <Title>{title}</Title>
+      {!showForm && (
+        <Button
+          fontSize="15px"
+          padding="10px 15px"
+          type="button"
+          onClick={handleClik}
+        >
+          add card
+        </Button>
+      )}
       {showForm && <FormAddCard onCloseForm={toggleShowForm} columnId={id} />}
       <Cards cards={cards} />
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  position: relative;
+  margin: 10px;
+  width: 170px;
+`;
+
+const Title = styled.h2`
+  margin: 0;
+  font-size: 28px;
+`;
+
+const ButtonDelete = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  color red;
+  border-radius: 50%;
+  cursor:pointer
+`;
 
 export default Column;
