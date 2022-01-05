@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FormAddCard from "../FormAddCard";
 import Cards from "../Cards";
+import Modal from "../Modal";
 import { boardSelectors } from "../../redux/selectors";
 import { boardActions } from "../../redux/actions";
 import { Button } from "../../assets/styles/styledComponents";
@@ -19,11 +20,9 @@ const Column = ({ id, title }: IProps) => {
     (card) => card.owner === id
   );
 
-  const toggleShowForm = useCallback(() => {
+  const handleToggleShowForm = useCallback(() => {
     setShowForm((prevShow) => !prevShow);
   }, []);
-
-  const handleClik = () => toggleShowForm();
 
   const handleDeleteColumn = () => {
     dispatch(boardActions.deleteColumn.Request({ columnId: id }));
@@ -35,17 +34,20 @@ const Column = ({ id, title }: IProps) => {
         X
       </ButtonDelete>
       <Title>{title}</Title>
-      {!showForm && (
-        <Button
-          fontSize="15px"
-          padding="10px 15px"
-          type="button"
-          onClick={handleClik}
-        >
-          add card
-        </Button>
+      <Button
+        fontSize="15px"
+        padding="10px 15px"
+        type="button"
+        onClick={handleToggleShowForm}
+      >
+        add card
+      </Button>
+
+      {showForm && (
+        <Modal onCloseModal={handleToggleShowForm}>
+          <FormAddCard onCloseForm={handleToggleShowForm} columnId={id} />
+        </Modal>
       )}
-      {showForm && <FormAddCard onCloseForm={toggleShowForm} columnId={id} />}
       <Cards cards={cards} />
     </Wrapper>
   );

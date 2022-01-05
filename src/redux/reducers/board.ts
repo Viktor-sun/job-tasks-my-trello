@@ -74,14 +74,15 @@ const initialState: IBoardState = {
   ],
   cards: [
     {
-      id: "iUcM5A59g",
-      title: "card 1",
-      owner: "RoBsqI1kp",
-    },
-    {
-      id: "IaaiDFNBc",
-      title: "card 2",
+      id: "CnnNlC1ZJl",
       owner: "4w5H6K8vy",
+      title: "card 1",
+      summary: "hello boy",
+      description: "some description",
+      priority: "Low",
+      reporter: "viktor",
+      status: "Forgotten",
+      label: "aquamarine",
     },
   ],
   error: null,
