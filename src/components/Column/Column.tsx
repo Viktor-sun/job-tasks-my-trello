@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FormAddCard from "../FormAddCard";
 import Cards from "../Cards";
@@ -19,9 +19,9 @@ const Column = ({ id, title }: IProps) => {
     (card) => card.owner === id
   );
 
-  const toggleShowForm = () => {
+  const toggleShowForm = useCallback(() => {
     setShowForm((prevShow) => !prevShow);
-  };
+  }, []);
 
   const handleClik = () => toggleShowForm();
 

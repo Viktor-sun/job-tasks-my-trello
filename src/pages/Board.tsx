@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import FormAddList from "../components/FormAddColumn";
@@ -11,9 +11,9 @@ const Board = () => {
   const [showForm, setShowForm] = useState(false);
   const { title, bgColor } = useSelector(boardSelectors.getBoardsDetails);
 
-  const toggleShowForm = () => {
+  const toggleShowForm = useCallback(() => {
     setShowForm((prevShow) => !prevShow);
-  };
+  }, []);
 
   return (
     <PageWrapper bgColor={bgColor}>
