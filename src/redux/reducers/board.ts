@@ -1,57 +1,6 @@
 import { boardActions } from "../actions";
 import { IBoardState, IAction } from "../../interfaces";
 
-// interface IChangeTitle {
-//   readonly type: string;
-//   readonly payload: {
-//     title: string;
-//     bgColor: string;
-//   };
-// }
-
-// interface ICreateColumn {
-//   readonly type: string;
-//   readonly payload: {
-//     id: string;
-//     title: string;
-//   };
-// }
-
-// interface IAddCard {
-//   readonly type: string;
-//   readonly payload: {
-//     id: string;
-//     title: string;
-//     owner: string;
-//   };
-// }
-
-// interface IDeleteColumn {
-//   readonly type: string;
-//   readonly payload: { columnId: string };
-// }
-
-// interface IDeleteCard {
-//   readonly type: string;
-//   readonly payload: { cardId: string };
-// }
-
-// interface IChangeCardTitle {
-//   readonly type: string;
-//   readonly payload: {
-//     id: string;
-//     title: string;
-//   };
-// }
-
-// type TAction =
-//   | IChangeTitle
-//   | ICreateColumn
-//   | IAddCard
-//   | IDeleteColumn
-//   | IDeleteCard
-//   | IChangeCardTitle;
-
 interface IReducerExtends {
   columnId: string;
   cardId: string;
@@ -85,6 +34,7 @@ const initialState: IBoardState = {
       label: "aquamarine",
     },
   ],
+  colors: ["#ffffff", "#544128", "#a7a9c3"],
   error: null,
 };
 
@@ -133,6 +83,12 @@ const boardReducer = <A extends IReducerExtends>(
         cards: newCards,
       };
 
+    case boardActions.addColor.Success.type:
+      return {
+        ...state,
+        colors: [...state.colors, action.payload],
+      };
+
     case boardActions.changeTitle.Error.type:
       return { ...state, error: action.payload };
     case boardActions.createColumn.Error.type:
@@ -140,6 +96,8 @@ const boardReducer = <A extends IReducerExtends>(
     case boardActions.addCard.Error.type:
       return { ...state, error: action.payload };
     case boardActions.deleteColumn.Error.type:
+      return { ...state, error: action.payload };
+    case boardActions.changeCardTitle.Error.type:
       return { ...state, error: action.payload };
     default:
       return state;

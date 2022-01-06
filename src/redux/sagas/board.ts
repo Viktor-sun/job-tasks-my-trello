@@ -51,6 +51,14 @@ export function* changeCardTitleWorker(action: IAction<string>) {
   }
 }
 
+export function* addColorWorker(action: IAction<string>) {
+  try {
+    yield put(boardActions.addColor.Success(action.payload));
+  } catch (error: any) {
+    yield put(boardActions.addColor.Error(error.message));
+  }
+}
+
 export function* boardWatcher() {
   yield takeEvery(boardActions.changeTitle.Request.type, changeTitleWorker);
   yield takeEvery(boardActions.createColumn.Request.type, createColumnWorker);
@@ -61,4 +69,5 @@ export function* boardWatcher() {
     boardActions.changeCardTitle.Request.type,
     changeCardTitleWorker
   );
+  yield takeEvery(boardActions.addColor.Request.type, addColorWorker);
 }
