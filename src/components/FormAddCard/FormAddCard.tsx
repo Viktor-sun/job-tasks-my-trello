@@ -2,18 +2,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, FastField, Form } from "formik";
 import * as Yup from "yup";
 import shortid from "shortid";
-import styled from "styled-components";
+import {
+  CustomInputComponent,
+  CustomTexareaComponent,
+  CustomSelectComponent,
+  CustomColorSelect,
+} from "../shared/customInputComponents";
 import { boardActions } from "../../redux/actions";
 import { boardSelectors } from "../../redux/selectors";
-import {
-  Button,
-  Input,
-  Label,
-  InputError,
-  Textarea,
-  Select,
-} from "../../assets/styles/styledComponents";
-
+import { Button, Label } from "../../assets/styles/styledComponents";
 interface IProps {
   onCloseForm: () => void;
   columnId: string;
@@ -75,101 +72,62 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ values }) => (
+      {() => (
         <Form>
           <Label>
             Title
-            <FastField name="title">
-              {({ field, form, meta }: any) => (
-                <>
-                  <Input {...field} type="text" placeholder="Enter title" />
-                  <InputError>{meta.touched && meta.error}</InputError>
-                  {/* {form.touched.title && form.errors.title && form.errors.title} */}
-                </>
-              )}
-            </FastField>
+            <FastField
+              name="title"
+              type="text"
+              placeholder="Enter title"
+              component={CustomInputComponent}
+            />
           </Label>
           <Label>
             Summary
-            <FastField name="summary">
-              {({ field, meta }: any) => (
-                <>
-                  <Input {...field} type="text" placeholder="Some summary" />
-                  <InputError>{meta.touched && meta.error}</InputError>
-                </>
-              )}
-            </FastField>
+            <FastField
+              name="summary"
+              type="text"
+              placeholder="Some summary"
+              component={CustomInputComponent}
+            />
           </Label>
           <Label>
             Description
-            <FastField name="description">
-              {({ field, meta }: any) => (
-                <>
-                  <Textarea {...field} placeholder="More description" />
-                  <InputError>{meta.touched && meta.error}</InputError>
-                </>
-              )}
-            </FastField>
+            <FastField
+              name="description"
+              placeholder="More description"
+              component={CustomTexareaComponent}
+            />
           </Label>
           <Label>
             Priority
-            <FastField name="priority">
-              {({ field }: any) => (
-                <>
-                  <Select {...field} value={values.priority}>
-                    <option value="Hight">Hight</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                  </Select>
-                </>
-              )}
-            </FastField>
+            <FastField
+              name="priority"
+              options={["Hight", "Medium", "Low"]}
+              as={CustomSelectComponent}
+            />
           </Label>
           <Label>
             Reporter
-            <FastField name="reporter">
-              {({ field, meta }: any) => (
-                <>
-                  <Input {...field} type="text" placeholder="Who am I..." />
-                  <InputError>{meta.touched && meta.error}</InputError>
-                </>
-              )}
-            </FastField>
+            <FastField
+              name="reporter"
+              placeholder="Who am I..."
+              component={CustomInputComponent}
+            />
           </Label>
           <Label>
             Status
-            <FastField name="status">
-              {({ field }: any) => (
-                <>
-                  <Select {...field} value={values.status}>
-                    <option value="Forgotten">Forgotten</option>
-                    <option value="In work">In work</option>
-                    <option value="Fulfilled">Fulfilled</option>
-                  </Select>
-                </>
-              )}
-            </FastField>
+            <FastField
+              name="status"
+              options={["Forgotten", "In work", "Fulfilled"]}
+              as={CustomSelectComponent}
+            />
           </Label>
 
           <Label>
             Label
-            <FastField name="label">
-              {({ field }: any) => (
-                <div style={{ display: "flex" }}>
-                  <input {...field} type="color" value={values.label} />
-
-                  <select {...field} value={values.label}>
-                    {colors.map((color) => (
-                      <Option
-                        key={color}
-                        value={color}
-                        bgColor={color}
-                      ></Option>
-                    ))}
-                  </select>
-                </div>
-              )}
-            </FastField>
+            <FastField name="label" options={colors} as={CustomColorSelect} />
           </Label>
 
           <Button type="submit">Create card</Button>
@@ -178,16 +136,5 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
     </Formik>
   );
 };
-
-type TProps = {
-  bgColor?: string;
-};
-
-const Option = styled.option<TProps>`
-  background-color: ${(props) => props.bgColor};
-  width: 50px;
-  height: 30px;
-  border-radius: 3px;
-`;
 
 export default FormAddCard;

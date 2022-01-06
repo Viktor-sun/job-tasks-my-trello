@@ -4,6 +4,7 @@ interface ITheme {
     accentColor: string;
     textColor: string;
     backgroundColor: string;
+    backgroundOption: string;
   };
 }
 
@@ -13,6 +14,7 @@ const theme: ITheme = {
     accentColor: "#2196f3",
     textColor: "#757575",
     backgroundColor: "#f7fff2",
+    backgroundOption: "#369",
   },
 };
 

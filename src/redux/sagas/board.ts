@@ -2,7 +2,7 @@ import { put, takeEvery } from "redux-saga/effects";
 import { boardActions } from "../actions";
 import { IAction } from "../../interfaces";
 
-export function* changeTitleWorker(action: IAction<string>) {
+export function* changeTitleWorker(action: IAction<{}>) {
   try {
     // const data = yield call();
     yield put(boardActions.changeTitle.Success(action.payload));
@@ -11,7 +11,7 @@ export function* changeTitleWorker(action: IAction<string>) {
   }
 }
 
-export function* createColumnWorker(action: IAction<string>) {
+export function* createColumnWorker(action: IAction<{}>) {
   try {
     yield put(boardActions.createColumn.Success(action.payload));
   } catch (error: any) {
@@ -19,7 +19,7 @@ export function* createColumnWorker(action: IAction<string>) {
   }
 }
 
-export function* addCardWorker(action: IAction<string>) {
+export function* addCardWorker(action: IAction<{}>) {
   try {
     yield put(boardActions.addCard.Success(action.payload));
   } catch (error: any) {
@@ -27,7 +27,7 @@ export function* addCardWorker(action: IAction<string>) {
   }
 }
 
-export function* deleteColumnWorker(action: IAction<string>) {
+export function* deleteColumnWorker(action: IAction<{}>) {
   try {
     yield put(boardActions.deleteColumn.Success(action.payload));
   } catch (error: any) {
@@ -35,7 +35,7 @@ export function* deleteColumnWorker(action: IAction<string>) {
   }
 }
 
-export function* deleteCardWorker(action: IAction<string>) {
+export function* deleteCardWorker(action: IAction<{}>) {
   try {
     yield put(boardActions.deleteCard.Success(action.payload));
   } catch (error: any) {
@@ -43,7 +43,7 @@ export function* deleteCardWorker(action: IAction<string>) {
   }
 }
 
-export function* changeCardTitleWorker(action: IAction<string>) {
+export function* changeCardTitleWorker(action: IAction<{}>) {
   try {
     yield put(boardActions.changeCardTitle.Success(action.payload));
   } catch (error: any) {
@@ -51,11 +51,19 @@ export function* changeCardTitleWorker(action: IAction<string>) {
   }
 }
 
-export function* addColorWorker(action: IAction<string>) {
+export function* addColorWorker(action: IAction<{}>) {
   try {
     yield put(boardActions.addColor.Success(action.payload));
   } catch (error: any) {
     yield put(boardActions.addColor.Error(error.message));
+  }
+}
+
+export function* changeCardOwnerWorker(action: IAction<{}>) {
+  try {
+    yield put(boardActions.changeCardOwner.Success(action.payload));
+  } catch (error: any) {
+    yield put(boardActions.changeCardOwner.Error(error.message));
   }
 }
 
@@ -70,4 +78,8 @@ export function* boardWatcher() {
     changeCardTitleWorker
   );
   yield takeEvery(boardActions.addColor.Request.type, addColorWorker);
+  yield takeEvery(
+    boardActions.changeCardOwner.Request.type,
+    changeCardOwnerWorker
+  );
 }

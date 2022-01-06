@@ -44,7 +44,7 @@ const initialState: IBoardState = {
       priority: "Low",
       reporter: "viktor",
       status: "Forgotten",
-      label: "aquamarine",
+      label: "#a7a9c3",
     },
   ],
   colors: ["#ffffff", "#544128", "#a7a9c3"],
@@ -102,6 +102,18 @@ const boardReducer = <A extends IReducerExtends>(
         colors: [...state.colors, action.payload],
       };
 
+    case boardActions.changeCardOwner.Success.type:
+      const index = state.cards.findIndex(
+        (card) => card.id === action.payload.cardId
+      );
+      const newCardsArr = [...state.cards];
+      newCardsArr[index].owner = action.payload.columnId;
+
+      return {
+        ...state,
+        cards: [...state.cards, action.payload],
+      };
+
     case boardActions.changeTitle.Error.type:
       return { ...state, error: action.payload };
     case boardActions.createColumn.Error.type:
@@ -111,6 +123,10 @@ const boardReducer = <A extends IReducerExtends>(
     case boardActions.deleteColumn.Error.type:
       return { ...state, error: action.payload };
     case boardActions.changeCardTitle.Error.type:
+      return { ...state, error: action.payload };
+    case boardActions.addColor.Error.type:
+      return { ...state, error: action.payload };
+    case boardActions.changeCardOwner.Error.type:
       return { ...state, error: action.payload };
     default:
       return state;

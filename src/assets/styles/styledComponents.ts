@@ -59,6 +59,12 @@ export const Select = styled.select`
   background-color: transparent;
 `;
 
+export const Option = styled.option`
+  margin: 5px;
+  color: #fff;
+  background-color: ${(props) => props.theme.colors.backgroundOption};
+`;
+
 export const Label = styled.label`
   display: flex;
   flex-direction: column;
@@ -71,7 +77,7 @@ type WrapperProps = {
 
 export const PageWrapper = styled.div<WrapperProps>`
   padding: 50px;
-  height: 100vh;
+  min-height: 100vh;
 
   ${({ bgColor }: WrapperProps) => `background-color: ${bgColor}`}
 `;
