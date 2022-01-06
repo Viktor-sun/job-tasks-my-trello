@@ -6,6 +6,7 @@ export interface IBoardState {
     title: string;
     owner: string;
     summary: string;
+    date: Date;
     status: string;
     reporter: string;
     description: string;

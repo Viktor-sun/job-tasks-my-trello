@@ -23,8 +23,21 @@ const initialState: IBoardState = {
   ],
   cards: [
     {
+      id: "aUF49QD-Z",
+      owner: "RoBsqI1kp",
+      date: new Date("2022-01-06T09:39:08"),
+      title: "card 2",
+      summary: "some summary",
+      description: "more description",
+      priority: "Low",
+      reporter: "viktor",
+      status: "Forgotten",
+      label: "#544128",
+    },
+    {
       id: "CnnNlC1ZJl",
       owner: "4w5H6K8vy",
+      date: new Date("2022-01-06T10:39:08"),
       title: "card 1",
       summary: "hello boy",
       description: "some description",

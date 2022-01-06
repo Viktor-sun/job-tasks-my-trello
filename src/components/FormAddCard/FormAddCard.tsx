@@ -19,9 +19,29 @@ interface IProps {
   columnId: string;
 }
 
+interface IValues {
+  title: string;
+  summary: string;
+  description: string;
+  priority: string;
+  reporter: string;
+  status: string;
+  label: string;
+}
+
 const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
   const dispatch = useDispatch();
   const colors = useSelector(boardSelectors.getColors);
+
+  const initialValues: IValues = {
+    title: "",
+    summary: "",
+    description: "",
+    priority: "Hight",
+    reporter: "",
+    status: "Forgotten",
+    label: "#ffffff",
+  };
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required(),
@@ -30,34 +50,30 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
     priority: Yup.string(),
     reporter: Yup.string().max(10).required(),
     status: Yup.string(),
+    label: Yup.string(),
   });
+
+  const handleSubmit = (values: IValues) => {
+    if (!colors.includes(values.label)) {
+      dispatch(boardActions.addColor.Request(values.label));
+    }
+
+    dispatch(
+      boardActions.addCard.Request({
+        id: shortid.generate(),
+        owner: columnId,
+        date: new Date(),
+        ...values,
+      })
+    );
+    onCloseForm();
+  };
 
   return (
     <Formik
-      initialValues={{
-        title: "",
-        summary: "",
-        description: "",
-        priority: "Hight",
-        reporter: "",
-        status: "Forgotten",
-        label: "#ffffff",
-      }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        if (!colors.includes(values.label)) {
-          dispatch(boardActions.addColor.Request(values.label));
-        }
-
-        dispatch(
-          boardActions.addCard.Request({
-            id: shortid.generate(),
-            owner: columnId,
-            ...values,
-          })
-        );
-        onCloseForm();
-      }}
+      onSubmit={handleSubmit}
     >
       {({ values }) => (
         <Form>
