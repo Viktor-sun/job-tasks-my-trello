@@ -7,7 +7,12 @@ import styled from "styled-components";
 import { HexColorPicker } from "react-colorful";
 import { navRoutes } from "../../routes";
 import { boardActions } from "../../redux/actions";
-import { Button, Input, Label } from "../../assets/styles/styledComponents";
+import {
+  Button,
+  Input,
+  Label,
+  InputError,
+} from "../../assets/styles/styledComponents";
 
 const FormCreateBoard = () => {
   const dispatch = useDispatch();
@@ -21,7 +26,7 @@ const FormCreateBoard = () => {
       },
       validationSchema: Yup.object({
         title: Yup.string()
-          .trim("need trim")
+          .trim()
           .strict()
           .required("👋Board title is required")
           .min(2, "needs to be at least two characters"),
@@ -35,7 +40,7 @@ const FormCreateBoard = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <p>Background</p>
+      <StyledP>Background</StyledP>
       <HexColorPicker
         style={{ width: "100%" }}
         color={color}
@@ -50,7 +55,7 @@ const FormCreateBoard = () => {
           value={values.title}
         />
         {errors.title && touched.title && (
-          <div style={{ color: "red" }}>{errors.title}</div>
+          <InputError>{errors.title}</InputError>
         )}
       </Label>
       <Button type="submit">create board</Button>
@@ -62,5 +67,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
+
+const StyledP = styled.p``;
 
 export default FormCreateBoard;

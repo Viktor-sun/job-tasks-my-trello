@@ -5,9 +5,9 @@ const createColumn = createAsyncActions("board/createColumn");
 const addCard = createAsyncActions("board/addCard");
 const deleteColumn = createAsyncActions("board/deleteColumn");
 const deleteCard = createAsyncActions("board/deleteCard");
-const changeCardTitle = createAsyncActions("card/changeCardTitle");
 const addColor = createAsyncActions("card/addColor");
 const changeCardOwner = createAsyncActions("card/changeCardOwner");
+const editCard = createAsyncActions("card/editCard");
 
 // eslint-disable-next-line
 export default {
@@ -16,7 +16,7 @@ export default {
   addCard,
   deleteColumn,
   deleteCard,
-  changeCardTitle,
   addColor,
   changeCardOwner,
+  editCard,
 };

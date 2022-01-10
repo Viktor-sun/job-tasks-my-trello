@@ -1,46 +1,49 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import Modal from "../components/Modal";
+import FormEditCard from "../components/FormEditCard";
 import { boardSelectors } from "../redux/selectors";
 import { boardActions } from "../redux/actions";
-import {
-  Title,
-  Button,
-  PageWrapper,
-  Input,
-} from "../assets/styles/styledComponents";
+import { Title, Button, PageWrapper } from "../assets/styles/styledComponents";
 
 const Card = () => {
   const dispatch = useDispatch();
   const { cardId } = useParams();
   const navigate = useNavigate();
-  const [showInputChangeTitle, setShowInputChangeTitle] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
+  // const [showInputChangeTitle, setShowInputChangeTitle] = useState(false);
 
   const cards = useSelector(boardSelectors.getCards);
-  const { bgColor } = useSelector(boardSelectors.getBoardsDetails);
-
   const card = cards.find((card) => card.id === cardId);
 
-  const [titleInputValue, setTitleInputValue] = useState(card?.title);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTitleInputValue(e.currentTarget.value);
+  const { bgColor } = useSelector(boardSelectors.getBoardsDetails);
 
-  const handleShowChangeTitle = () => setShowInputChangeTitle((prev) => !prev);
-  const handleChangeTitle = () => {
-    if (titleInputValue === "" || titleInputValue === card?.title) {
-      handleShowChangeTitle();
-      return;
-    }
+  const toggleShowForm = useCallback(() => {
+    setShowForm((prevShow) => !prevShow);
+  }, []);
 
-    dispatch(
-      boardActions.changeCardTitle.Request({
-        id: cardId,
-        title: titleInputValue,
-      })
-    );
-    handleShowChangeTitle();
-  };
+  // const [titleInputValue, setTitleInputValue] = useState(card?.title);
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  //   setTitleInputValue(e.currentTarget.value);
+
+  // const handleShowChangeTitle = () => setShowInputChangeTitle((prev) => !prev);
+  // const handleChangeTitle = () => {
+  //   if (titleInputValue === "" || titleInputValue === card?.title) {
+  //     handleShowChangeTitle();
+  //     return;
+  //   }
+
+  //   dispatch(
+  //     boardActions.changeCardTitle.Request({
+  //       id: cardId,
+  //       title: titleInputValue,
+  //     })
+  //   );
+  //   handleShowChangeTitle();
+  // };
 
   const handleBack = () => navigate(-1);
 
@@ -78,8 +81,8 @@ const Card = () => {
         </ButtonContainer>
 
         <p>in column {getCurrentColumn()}</p>
-        <Title onClick={handleShowChangeTitle}>{card?.title}</Title>
-        {showInputChangeTitle && (
+        <Title>{card?.title}</Title>
+        {/* {showInputChangeTitle && (
           <Input
             type="text"
             autoFocus
@@ -87,7 +90,7 @@ const Card = () => {
             onChange={handleChange}
             onBlur={handleChangeTitle}
           />
-        )}
+        )} */}
 
         <DetailsList>
           <Item>Summary: {card?.summary}</Item>
@@ -98,6 +101,14 @@ const Card = () => {
           <Item>Label: {card?.label}</Item>
           <Item>Date: {card?.date.toLocaleString()}</Item>
         </DetailsList>
+
+        {showForm && card && (
+          <Modal onCloseModal={toggleShowForm}>
+            <FormEditCard onCloseForm={toggleShowForm} card={card} />
+          </Modal>
+        )}
+
+        <Button onClick={toggleShowForm}>Edit card</Button>
       </Container>
     </PageWrapper>
   );

@@ -6,6 +6,7 @@ interface IReducerExtends {
   cardId: string;
   id: string;
   title: string;
+  editedCard: {};
 }
 
 const initialState: IBoardState = {
@@ -85,12 +86,19 @@ const boardReducer = <A extends IReducerExtends>(
         cards: state.cards.filter((card) => card.id !== action.payload.cardId),
       };
 
-    case boardActions.changeCardTitle.Success.type:
+    case boardActions.editCard.Success.type:
       const idx = state.cards.findIndex(
         (card) => card.id === action.payload.id
       );
       const newCards = [...state.cards];
-      newCards[idx].title = action.payload.title;
+
+      const editedCard = {
+        ...newCards[idx],
+        ...action.payload.editedCard,
+      };
+
+      newCards.splice(idx, 1, editedCard);
+
       return {
         ...state,
         cards: newCards,
@@ -122,7 +130,7 @@ const boardReducer = <A extends IReducerExtends>(
       return { ...state, error: action.payload };
     case boardActions.deleteColumn.Error.type:
       return { ...state, error: action.payload };
-    case boardActions.changeCardTitle.Error.type:
+    case boardActions.editCard.Error.type:
       return { ...state, error: action.payload };
     case boardActions.addColor.Error.type:
       return { ...state, error: action.payload };

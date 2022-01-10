@@ -20,7 +20,7 @@ const Column = ({ id, title }: IProps) => {
     (card) => card.owner === id
   );
 
-  const handleToggleShowForm = useCallback(() => {
+  const toggleShowForm = useCallback(() => {
     setShowForm((prevShow) => !prevShow);
   }, []);
 
@@ -38,14 +38,14 @@ const Column = ({ id, title }: IProps) => {
         fontSize="15px"
         padding="10px 15px"
         type="button"
-        onClick={handleToggleShowForm}
+        onClick={toggleShowForm}
       >
         add card
       </Button>
 
       {showForm && (
-        <Modal onCloseModal={handleToggleShowForm}>
-          <FormAddCard onCloseForm={handleToggleShowForm} columnId={id} />
+        <Modal onCloseModal={toggleShowForm}>
+          <FormAddCard onCloseForm={toggleShowForm} columnId={id} />
         </Modal>
       )}
       <Cards cards={cards} />
