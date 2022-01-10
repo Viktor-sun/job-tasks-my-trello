@@ -71,15 +71,23 @@ export const Label = styled.label`
   margin: 5px 0;
 `;
 
+export const AuthForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+`;
+
 type WrapperProps = {
-  bgColor: string;
+  bgColor?: string;
 };
 
 export const PageWrapper = styled.div<WrapperProps>`
   padding: 50px;
   min-height: 100vh;
 
-  ${({ bgColor }: WrapperProps) => `background-color: ${bgColor}`}
+  ${({ bgColor }: WrapperProps) =>
+    `background-color: ${bgColor ? bgColor : "#ffffff"}`}
 `;
 
 export const InputError = styled.span`
