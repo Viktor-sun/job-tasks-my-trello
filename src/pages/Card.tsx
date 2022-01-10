@@ -13,8 +13,7 @@ const Card = () => {
   const { cardId } = useParams();
   const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
-
-  // const [showInputChangeTitle, setShowInputChangeTitle] = useState(false);
+  const [showMoveToColumn, setShowMoveToColumn] = useState(false);
 
   const cards = useSelector(boardSelectors.getCards);
   const card = cards.find((card) => card.id === cardId);
@@ -25,26 +24,6 @@ const Card = () => {
     setShowForm((prevShow) => !prevShow);
   }, []);
 
-  // const [titleInputValue, setTitleInputValue] = useState(card?.title);
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-  //   setTitleInputValue(e.currentTarget.value);
-
-  // const handleShowChangeTitle = () => setShowInputChangeTitle((prev) => !prev);
-  // const handleChangeTitle = () => {
-  //   if (titleInputValue === "" || titleInputValue === card?.title) {
-  //     handleShowChangeTitle();
-  //     return;
-  //   }
-
-  //   dispatch(
-  //     boardActions.changeCardTitle.Request({
-  //       id: cardId,
-  //       title: titleInputValue,
-  //     })
-  //   );
-  //   handleShowChangeTitle();
-  // };
-
   const handleBack = () => navigate(-1);
 
   const handleDeleteCard = () => {
@@ -52,9 +31,12 @@ const Card = () => {
     navigate(-1);
   };
 
+  const handleShowMoveToColumn = () => setShowMoveToColumn((prev) => !prev);
+
   const columns = useSelector(boardSelectors.getColumns);
   const handleMove = (columnId: string) => () => {
     dispatch(boardActions.changeCardOwner.Request({ cardId, columnId }));
+    handleShowMoveToColumn();
   };
 
   const getCurrentColumn = () =>
@@ -68,29 +50,26 @@ const Card = () => {
             back
           </Button>
 
-          <ul>
-            {columns.map((column) => (
-              <li key={column.id} onClick={handleMove(column.id)}>
-                move to: {column.title}
-              </li>
-            ))}
-          </ul>
+          <Button type="button" onClick={handleShowMoveToColumn}>
+            move
+          </Button>
+
           <Button type="button" onClick={handleDeleteCard}>
             delete card
           </Button>
         </ButtonContainer>
-
-        <p>in column {getCurrentColumn()}</p>
+        {showMoveToColumn && (
+          <Columns>
+            {columns.map((column) => (
+              <Column key={column.id} onClick={handleMove(column.id)}>
+                to: {column.title}
+              </Column>
+            ))}
+          </Columns>
+        )}
+        <CurrentColumn>in column {getCurrentColumn()}</CurrentColumn>
         <Title>{card?.title}</Title>
-        {/* {showInputChangeTitle && (
-          <Input
-            type="text"
-            autoFocus
-            value={titleInputValue}
-            onChange={handleChange}
-            onBlur={handleChangeTitle}
-          />
-        )} */}
+        <Label bgColor={card?.label} />
 
         <DetailsList>
           <Item>Summary: {card?.summary}</Item>
@@ -98,7 +77,6 @@ const Card = () => {
           <Item>Priority: {card?.priority}</Item>
           <Item>Reporter: {card?.reporter}</Item>
           <Item>Status: {card?.status}</Item>
-          <Item>Label: {card?.label}</Item>
           <Item>Date: {card?.date.toLocaleString()}</Item>
         </DetailsList>
 
@@ -108,13 +86,14 @@ const Card = () => {
           </Modal>
         )}
 
-        <Button onClick={toggleShowForm}>Edit card</Button>
+        <StyledButton onClick={toggleShowForm}>Edit card</StyledButton>
       </Container>
     </PageWrapper>
   );
 };
 
 const Container = styled.div`
+  position: relative;
   margin: auto;
   max-width: 600px;
 `;
@@ -122,6 +101,49 @@ const Container = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const StyledButton = styled(Button)`
+  display: flex;
+
+  margin: 0 auto;
+`;
+
+const Columns = styled.ul`
+  position: absolute;
+  top: 35px;
+  right: 178px;
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  font-size: 27px;
+  border-radius: 7px;
+  background-color: #fff;
+  cursor: pointer;
+`;
+
+const Column = styled.li`
+  padding: 5px;
+  border-radius: 7px;
+  transition: background-color 250ms, color 250ms;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.accentColor};
+    color: #ffffff;
+  }
+`;
+
+const CurrentColumn = styled.p`
+  font-size: 20px;
+`;
+
+type TLabelProps = { bgColor?: string };
+
+const Label = styled.span<TLabelProps>`
+  display: inline-block;
+  width: 100%;
+  height: 44px;
+  border-radius: 7px;
+  background-color: ${({ bgColor }) => (bgColor ? bgColor : "#fff")};
 `;
 
 const DetailsList = styled.ul`

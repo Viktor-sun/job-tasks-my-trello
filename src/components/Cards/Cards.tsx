@@ -2,14 +2,30 @@ import styled from "styled-components";
 import Card from "../Card";
 
 interface IProps {
-  cards: { id: string; title: string }[];
+  cards: {
+    id: string;
+    title: string;
+    owner: string;
+    summary: string;
+    date: Date;
+    status: string;
+    reporter: string;
+    description: string;
+    label: string;
+    priority: string;
+  }[];
 }
 
 const Cards = ({ cards }: IProps) => {
   return (
     <List>
       {cards.map((card) => (
-        <Card key={card.id} cardId={card.id} title={card.title} />
+        <Card
+          key={card.id}
+          cardId={card.id}
+          title={card.title}
+          label={card.label}
+        />
       ))}
     </List>
   );
