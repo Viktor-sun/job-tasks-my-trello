@@ -1,12 +1,11 @@
 import FormLogin from "../components/FormLogin";
-import { Title, PageWrapper } from "../assets/styles/styledComponents";
+import Layout from "../components/Layout";
 
 const Login = () => {
   return (
-    <PageWrapper>
-      <Title>login page</Title>
+    <Layout withTitle titleText="login page">
       <FormLogin />
-    </PageWrapper>
+    </Layout>
   );
 };
 

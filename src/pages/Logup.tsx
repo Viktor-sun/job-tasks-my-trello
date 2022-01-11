@@ -1,12 +1,15 @@
 import FormLogup from "../components/FormLogup";
-import { Title, PageWrapper } from "../assets/styles/styledComponents";
+import Layout from "../components/Layout";
 
-const Logup = () => {
+interface IProps {
+  titleText?: string;
+}
+
+const Logup = ({ titleText }: IProps) => {
   return (
-    <PageWrapper>
-      <Title>logup page</Title>
+    <Layout withTitle titleText={titleText}>
       <FormLogup />
-    </PageWrapper>
+    </Layout>
   );
 };
 

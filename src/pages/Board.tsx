@@ -1,9 +1,11 @@
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+
 import FormAddList from "../components/FormAddColumn";
 import Columns from "../components/Columns";
-import { Title, Button, PageWrapper } from "../assets/styles/styledComponents";
+import Layout from "../components/Layout";
+import Button from "../components/shared/Button";
 
 import { boardSelectors } from "../redux/selectors";
 
@@ -16,18 +18,19 @@ const Board = () => {
   }, []);
 
   return (
-    <PageWrapper bgColor={bgColor}>
+    <Layout bgColor={bgColor} withTitle titleText={`board ${title}`}>
       <Container>
-        <Title>board {title}</Title>
         {showForm && <FormAddList onCloseForm={toggleShowForm} />}
         {!showForm && (
-          <Button type="button" onClick={toggleShowForm}>
-            add todo list
-          </Button>
+          <Button
+            type="button"
+            name=" add todo list"
+            onClick={toggleShowForm}
+          />
         )}
         <Columns />
       </Container>
-    </PageWrapper>
+    </Layout>
   );
 };
 

@@ -2,7 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import Modal from "../components/Modal";
 import FormCreateBoard from "../components/FormCreateBoard";
-import { Title, Button } from "../assets/styles/styledComponents";
+import Title from "../components/shared/Title";
+import Button from "../components/shared/Button";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
@@ -13,8 +14,8 @@ const Home = () => {
 
   return (
     <Wrapper>
-      <Title>hello</Title>
-      <Button onClick={handleClick}>create new board</Button>
+      <Title text="hello" />
+      <Button name="create new board" type="button" onClick={handleClick} />
 
       {showModal && (
         <Modal onCloseModal={handleClick}>

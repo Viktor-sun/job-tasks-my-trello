@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import FormAddCard from "../FormAddCard";
 import Cards from "../Cards";
 import Modal from "../Modal";
+import Button from "../shared/Button";
 import { boardSelectors } from "../../redux/selectors";
 import { boardActions } from "../../redux/actions";
-import { Button } from "../../assets/styles/styledComponents";
 import styled from "styled-components";
 
 interface IProps {
@@ -34,14 +34,7 @@ const Column = ({ id, title }: IProps) => {
         X
       </ButtonDelete>
       <Title>{title}</Title>
-      <Button
-        fontSize="15px"
-        padding="10px 15px"
-        type="button"
-        onClick={toggleShowForm}
-      >
-        add card
-      </Button>
+      <Button size="s" name="add card" type="button" onClick={toggleShowForm} />
 
       {showForm && (
         <Modal onCloseModal={toggleShowForm}>

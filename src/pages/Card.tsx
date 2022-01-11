@@ -1,24 +1,36 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+
 import Modal from "../components/Modal";
 import FormEditCard from "../components/FormEditCard";
+import Layout from "../components/Layout";
+import Title from "../components/shared/Title";
+import Button from "../components/shared/Button";
+
 import { boardSelectors } from "../redux/selectors";
 import { boardActions } from "../redux/actions";
-import { Title, Button, PageWrapper } from "../assets/styles/styledComponents";
+import { navRoutes } from "../routes";
 
 const Card = () => {
   const dispatch = useDispatch();
   const { cardId } = useParams();
   const navigate = useNavigate();
+
   const [showForm, setShowForm] = useState(false);
   const [showMoveToColumn, setShowMoveToColumn] = useState(false);
 
+  const { bgColor } = useSelector(boardSelectors.getBoardsDetails);
+  const columns = useSelector(boardSelectors.getColumns);
   const cards = useSelector(boardSelectors.getCards);
   const card = cards.find((card) => card.id === cardId);
 
-  const { bgColor } = useSelector(boardSelectors.getBoardsDetails);
+  useEffect(() => {
+    if (!card) {
+      navigate(navRoutes.board);
+    }
+  }, [card, navigate]);
 
   const toggleShowForm = useCallback(() => {
     setShowForm((prevShow) => !prevShow);
@@ -33,31 +45,24 @@ const Card = () => {
 
   const handleShowMoveToColumn = () => setShowMoveToColumn((prev) => !prev);
 
-  const columns = useSelector(boardSelectors.getColumns);
   const handleMove = (columnId: string) => () => {
     dispatch(boardActions.changeCardOwner.Request({ cardId, columnId }));
     handleShowMoveToColumn();
   };
 
-  const getCurrentColumn = () =>
-    columns.find((column) => column.id === card?.owner)?.title;
+  const currentColumn = columns.find(
+    (column) => column.id === card?.owner
+  )?.title;
 
   return (
-    <PageWrapper bgColor={bgColor}>
+    <Layout bgColor={bgColor}>
       <Container>
         <ButtonContainer>
-          <Button type="button" onClick={handleBack}>
-            back
-          </Button>
-
-          <Button type="button" onClick={handleShowMoveToColumn}>
-            move
-          </Button>
-
-          <Button type="button" onClick={handleDeleteCard}>
-            delete card
-          </Button>
+          <Button type="button" name="back" onClick={handleBack} />
+          <Button type="button" name="move" onClick={handleShowMoveToColumn} />
+          <Button type="button" name="delete card" onClick={handleDeleteCard} />
         </ButtonContainer>
+
         {showMoveToColumn && (
           <Columns>
             {columns.map((column) => (
@@ -67,8 +72,8 @@ const Card = () => {
             ))}
           </Columns>
         )}
-        <CurrentColumn>in column {getCurrentColumn()}</CurrentColumn>
-        <Title>{card?.title}</Title>
+        <CurrentColumn>in column {currentColumn}</CurrentColumn>
+        <Title text={card?.title} />
         <Label bgColor={card?.label} />
 
         <DetailsList>
@@ -86,9 +91,9 @@ const Card = () => {
           </Modal>
         )}
 
-        <StyledButton onClick={toggleShowForm}>Edit card</StyledButton>
+        <Button type="button" name="Edit card" onClick={toggleShowForm} />
       </Container>
-    </PageWrapper>
+    </Layout>
   );
 };
 
@@ -101,12 +106,6 @@ const Container = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`;
-
-const StyledButton = styled(Button)`
-  display: flex;
-
-  margin: 0 auto;
 `;
 
 const Columns = styled.ul`

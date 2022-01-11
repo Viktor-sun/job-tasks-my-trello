@@ -1,15 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, FastField, Form } from "formik";
-import * as Yup from "yup";
-import {
-  CustomInputComponent,
-  CustomTexareaComponent,
-  CustomSelectComponent,
-  CustomColorSelect,
-} from "../shared/customInputComponents";
+
+import InputLabel from "../shared/InputLabel";
+import CustomInput from "../shared/CustomInput";
+import CustomTextarea from "../shared/CustomTexarea";
+import CustomSelect from "../shared/CustomSelect";
+import CustomColorSelect from "../shared/CustomColorSelect";
+import Button from "../shared/Button";
+
 import { boardActions } from "../../redux/actions";
 import { boardSelectors } from "../../redux/selectors";
-import { Button, Label } from "../../assets/styles/styledComponents";
+
+import { IValues } from "../../interfaces";
+import { validationSchema } from "../../validationSchemas";
 
 interface IProps {
   onCloseForm: () => void;
@@ -26,16 +29,6 @@ interface IProps {
   };
 }
 
-interface IValues {
-  title: string;
-  summary: string;
-  description: string;
-  priority: string;
-  reporter: string;
-  status: string;
-  label: string;
-}
-
 const FormAddCard = ({ onCloseForm, card }: IProps) => {
   const dispatch = useDispatch();
   const colors = useSelector(boardSelectors.getColors);
@@ -49,16 +42,6 @@ const FormAddCard = ({ onCloseForm, card }: IProps) => {
     status: card.status,
     label: card.label,
   };
-
-  const validationSchema = Yup.object().shape({
-    title: Yup.string().required(),
-    summary: Yup.string().max(20),
-    description: Yup.string().min(5).max(70),
-    priority: Yup.string(),
-    reporter: Yup.string().max(10).required(),
-    status: Yup.string(),
-    label: Yup.string(),
-  });
 
   const handleSubmit = (values: IValues) => {
     if (!colors.includes(values.label)) {
@@ -82,63 +65,56 @@ const FormAddCard = ({ onCloseForm, card }: IProps) => {
     >
       {() => (
         <Form>
-          <Label>
-            Title
+          <InputLabel label="Title">
             <FastField
               name="title"
               type="text"
               placeholder="Enter title"
-              component={CustomInputComponent}
+              component={CustomInput}
             />
-          </Label>
-          <Label>
-            Summary
+          </InputLabel>
+          <InputLabel label="Summary">
             <FastField
               name="summary"
               type="text"
               placeholder="Some summary"
-              component={CustomInputComponent}
+              component={CustomInput}
             />
-          </Label>
-          <Label>
-            Description
+          </InputLabel>
+          <InputLabel label="Description">
             <FastField
               name="description"
               placeholder="More description"
-              component={CustomTexareaComponent}
+              component={CustomTextarea}
             />
-          </Label>
-          <Label>
-            Priority
+          </InputLabel>
+          <InputLabel label="Priority">
             <FastField
               name="priority"
               options={["Hight", "Medium", "Low"]}
-              as={CustomSelectComponent}
+              as={CustomSelect}
             />
-          </Label>
-          <Label>
-            Reporter
+          </InputLabel>
+          <InputLabel label="Reporter">
             <FastField
               name="reporter"
               placeholder="Who am I..."
-              component={CustomInputComponent}
+              component={CustomInput}
             />
-          </Label>
-          <Label>
-            Status
+          </InputLabel>
+          <InputLabel label="Status">
             <FastField
               name="status"
               options={["Forgotten", "In work", "Fulfilled"]}
-              as={CustomSelectComponent}
+              as={CustomSelect}
             />
-          </Label>
+          </InputLabel>
 
-          <Label>
-            Label
+          <InputLabel label="Label">
             <FastField name="label" options={colors} as={CustomColorSelect} />
-          </Label>
+          </InputLabel>
 
-          <Button type="submit">Save changes</Button>
+          <Button type="submit" name="Save changes" />
         </Form>
       )}
     </Formik>

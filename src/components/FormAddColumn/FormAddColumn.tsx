@@ -1,9 +1,14 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Formik, Field, Form } from "formik";
 import shortid from "shortid";
 import styled from "styled-components";
+
+import InputLabel from "../shared/InputLabel";
+import CustomInput from "../shared/CustomInput";
+import Button from "../shared/Button";
+
+import { onFormAddColumn } from "../../validationSchemas";
 import { boardActions } from "../../redux/actions";
-import { Label, Input, Button } from "../../assets/styles/styledComponents";
 
 interface IProps {
   onCloseForm: () => void;
@@ -11,41 +16,37 @@ interface IProps {
 
 const FormAddList = ({ onCloseForm }: IProps) => {
   const dispatch = useDispatch();
-  const [inputValue, setInputvalue] = useState("");
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setInputvalue(e.currentTarget.value);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(
-      boardActions.createColumn.Request({
-        id: shortid.generate(),
-        title: inputValue,
-      })
-    );
-    onCloseForm();
-  };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Label>
-        <Input
-          type="text"
-          onChange={handleChange}
-          value={inputValue}
-          placeholder="Enter list title"
-        />
-      </Label>
-      <Button type="submit">add list</Button>
-      <Button type="button" onClick={onCloseForm}>
-        close
-      </Button>
-    </Form>
+    <Formik
+      initialValues={{
+        column: "",
+      }}
+      validationSchema={onFormAddColumn}
+      onSubmit={({ column }) => {
+        dispatch(
+          boardActions.createColumn.Request({
+            id: shortid.generate(),
+            title: column,
+          })
+        );
+        onCloseForm();
+      }}
+    >
+      {() => (
+        <StyledForm>
+          <InputLabel>
+            <Field name="column" type="text" component={CustomInput} />
+          </InputLabel>
+          <Button type="submit" name="add list" />
+          <Button type="button" name="close" onClick={onCloseForm} />
+        </StyledForm>
+      )}
+    </Formik>
   );
 };
 
-const Form = styled.form`
+const StyledForm = styled(Form)`
   display: flex;
 `;
 
