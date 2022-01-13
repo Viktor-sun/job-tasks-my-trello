@@ -13,7 +13,7 @@ const errorReducer = (state = null, action: IAction<string>) => {
       return action.payload;
     case boardActions.editCard.Error.type:
       return action.payload;
-    case boardActions.addColor.Error.type:
+    case boardActions.addLabel.Error.type:
       return action.payload;
     case boardActions.changeCardOwner.Error.type:
       return action.payload;

@@ -48,7 +48,7 @@ const initialState: IBoardState = {
       label: "#a7a9c3",
     },
   ],
-  colors: ["#ffffff", "#544128", "#a7a9c3"],
+  labels: ["#ffffff", "#544128", "#a7a9c3"],
 };
 
 const boardReducer = <A extends IReducerExtends>(
@@ -103,10 +103,10 @@ const boardReducer = <A extends IReducerExtends>(
         cards: newCards,
       };
 
-    case boardActions.addColor.Success.type:
+    case boardActions.addLabel.Success.type:
       return {
         ...state,
-        colors: [...state.colors, action.payload],
+        labels: [...state.labels, action.payload],
       };
 
     case boardActions.changeCardOwner.Success.type:

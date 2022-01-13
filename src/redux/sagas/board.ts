@@ -51,11 +51,11 @@ export function* editCardWorker(action: IAction<{}>) {
   }
 }
 
-export function* addColorWorker(action: IAction<{}>) {
+export function* addLabelWorker(action: IAction<{}>) {
   try {
-    yield put(boardActions.addColor.Success(action.payload));
+    yield put(boardActions.addLabel.Success(action.payload));
   } catch (error: any) {
-    yield put(boardActions.addColor.Error(error.message));
+    yield put(boardActions.addLabel.Error(error.message));
   }
 }
 
@@ -74,7 +74,7 @@ export function* boardWatcher() {
   yield takeEvery(boardActions.deleteColumn.Request.type, deleteColumnWorker);
   yield takeEvery(boardActions.deleteCard.Request.type, deleteCardWorker);
   yield takeEvery(boardActions.editCard.Request.type, editCardWorker);
-  yield takeEvery(boardActions.addColor.Request.type, addColorWorker);
+  yield takeEvery(boardActions.addLabel.Request.type, addLabelWorker);
   yield takeEvery(
     boardActions.changeCardOwner.Request.type,
     changeCardOwnerWorker

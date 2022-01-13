@@ -22,7 +22,7 @@ interface IProps {
 
 const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
   const dispatch = useDispatch();
-  const colors = useSelector(boardSelectors.getColors);
+  const labels = useSelector(boardSelectors.getLabels);
 
   const initialValues: IValues = {
     title: "",
@@ -35,8 +35,8 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
   };
 
   const handleSubmit = (values: IValues) => {
-    if (!colors.includes(values.label)) {
-      dispatch(boardActions.addColor.Request(values.label));
+    if (!labels.includes(values.label)) {
+      dispatch(boardActions.addLabel.Request(values.label));
     }
 
     dispatch(
@@ -104,7 +104,7 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
           </InputLabel>
 
           <InputLabel label="Label">
-            <FastField name="label" options={colors} as={CustomColorSelect} />
+            <FastField name="label" options={labels} as={CustomColorSelect} />
           </InputLabel>
 
           <Button type="submit" name="Create card" />

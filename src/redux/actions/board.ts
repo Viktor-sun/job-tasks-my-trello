@@ -5,7 +5,7 @@ const createColumn = createAsyncActions("board/createColumn");
 const addCard = createAsyncActions("board/addCard");
 const deleteColumn = createAsyncActions("board/deleteColumn");
 const deleteCard = createAsyncActions("board/deleteCard");
-const addColor = createAsyncActions("card/addColor");
+const addLabel = createAsyncActions("card/addLabel");
 const changeCardOwner = createAsyncActions("card/changeCardOwner");
 const editCard = createAsyncActions("card/editCard");
 
@@ -16,7 +16,7 @@ export default {
   addCard,
   deleteColumn,
   deleteCard,
-  addColor,
+  addLabel,
   changeCardOwner,
   editCard,
 };
