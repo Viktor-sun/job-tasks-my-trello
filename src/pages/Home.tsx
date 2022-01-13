@@ -1,21 +1,38 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Modal from "../components/Modal";
 import FormCreateBoard from "../components/FormCreateBoard";
 import Title from "../components/shared/Title";
 import Button from "../components/shared/Button";
 
+import { boardsActions } from "../redux/actions";
+import { boardsSelectors } from "../redux/selectors";
+
 const Home = () => {
+  const dispatch = useDispatch();
+  const boards = useSelector(boardsSelectors.getBoards);
   const [showModal, setShowModal] = useState(false);
 
-  const handleClick = () => {
-    setShowModal((prevShowModal) => !prevShowModal);
-  };
+  useEffect(() => {
+    dispatch(boardsActions.fetchBoards.Request());
+  }, [dispatch]);
+
+  const handleClick = useCallback(
+    () => setShowModal((prevShowModal) => !prevShowModal),
+    []
+  );
 
   return (
     <Wrapper>
       <Title text="hello" />
       <Button name="create new board" type="button" onClick={handleClick} />
+
+      <ul>
+        {boards.map((board) => (
+          <li key={board._id}>{board?.title}</li>
+        ))}
+      </ul>
 
       {showModal && (
         <Modal onCloseModal={handleClick}>

@@ -49,7 +49,6 @@ const initialState: IBoardState = {
     },
   ],
   colors: ["#ffffff", "#544128", "#a7a9c3"],
-  error: null,
 };
 
 const boardReducer = <A extends IReducerExtends>(
@@ -122,20 +121,6 @@ const boardReducer = <A extends IReducerExtends>(
         cards: [...state.cards, action.payload],
       };
 
-    case boardActions.changeTitle.Error.type:
-      return { ...state, error: action.payload };
-    case boardActions.createColumn.Error.type:
-      return { ...state, error: action.payload };
-    case boardActions.addCard.Error.type:
-      return { ...state, error: action.payload };
-    case boardActions.deleteColumn.Error.type:
-      return { ...state, error: action.payload };
-    case boardActions.editCard.Error.type:
-      return { ...state, error: action.payload };
-    case boardActions.addColor.Error.type:
-      return { ...state, error: action.payload };
-    case boardActions.changeCardOwner.Error.type:
-      return { ...state, error: action.payload };
     default:
       return state;
   }

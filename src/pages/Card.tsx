@@ -45,10 +45,13 @@ const Card = () => {
 
   const handleShowMoveToColumn = () => setShowMoveToColumn((prev) => !prev);
 
-  const handleMove = (columnId: string) => () => {
-    dispatch(boardActions.changeCardOwner.Request({ cardId, columnId }));
-    handleShowMoveToColumn();
-  };
+  const handleMove = useCallback(
+    (columnId: string) => () => {
+      dispatch(boardActions.changeCardOwner.Request({ cardId, columnId }));
+      handleShowMoveToColumn();
+    },
+    [cardId, dispatch]
+  );
 
   const currentColumn = columns.find(
     (column) => column.id === card?.owner

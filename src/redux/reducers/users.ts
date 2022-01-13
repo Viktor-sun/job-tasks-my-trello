@@ -21,11 +21,6 @@ const usersReducer = (state = initialState, action: IAction<{}>) => {
     case usersActions.login.Success.type:
       return action.payload;
 
-    case usersActions.logup.Error.type:
-      return { ...state, error: action.payload };
-    case usersActions.login.Error.type:
-      return { ...state, error: action.payload };
-
     default:
       return state;
   }

@@ -14,5 +14,4 @@ export interface IBoardState {
     priority: string;
   }[];
   colors: string[];
-  error: string | null;
 }

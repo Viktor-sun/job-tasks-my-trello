@@ -1,13 +1,9 @@
-import { IBoardState } from "../../interfaces";
+import { IAppState } from "../../interfaces";
 
-interface IBoard {
-  board: IBoardState;
-}
-
-const getBoardsDetails = (state: IBoard) => state.board.boardsDetails;
-const getColumns = (state: IBoard) => state.board.columns;
-const getCards = (state: IBoard) => state.board.cards;
-const getColors = (state: IBoard) => state.board.colors;
+const getBoardsDetails = (state: IAppState) => state.board.boardsDetails;
+const getColumns = (state: IAppState) => state.board.columns;
+const getCards = (state: IAppState) => state.board.cards;
+const getColors = (state: IAppState) => state.board.colors;
 
 // eslint-disable-next-line
 export default { getBoardsDetails, getColumns, getCards, getColors };
