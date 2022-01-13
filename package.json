@@ -13,6 +13,7 @@
     "@types/react-redux": "^7.1.21",
     "@types/redux-saga": "^0.10.5",
     "@types/styled-components": "^5.1.19",
+    "axios": "^0.24.0",
     "formik": "^2.2.9",
     "modern-normalize": "^1.1.0",
     "react": "^17.0.2",
