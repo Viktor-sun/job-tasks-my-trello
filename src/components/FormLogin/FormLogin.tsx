@@ -29,7 +29,7 @@ const FormLogin = () => {
             <InputLabel label="name">
               <Field name="login" type="text" component={CustomInput} />
             </InputLabel>
-            <InputLabel label="">
+            <InputLabel label="password">
               <Field name="password" type="password" component={CustomInput} />
             </InputLabel>
             <Button type="submit" name="Submit" />
