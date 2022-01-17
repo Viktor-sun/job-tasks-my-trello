@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Title from "../shared/Title";
+import AppBar from "../shared/AppBar";
 
 interface IProps {
   children: React.ReactNode;
@@ -10,10 +11,13 @@ interface IProps {
 
 const Layout = ({ children, bgColor, withTitle, titleText }: IProps) => {
   return (
-    <PageWrapper bgColor={bgColor}>
-      {withTitle && <Title text={titleText} />}
-      {children}
-    </PageWrapper>
+    <>
+      <AppBar />
+      <PageWrapper bgColor={bgColor}>
+        {withTitle && <Title text={titleText} />}
+        {children}
+      </PageWrapper>
+    </>
   );
 };
 

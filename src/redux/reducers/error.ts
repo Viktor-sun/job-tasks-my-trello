@@ -22,6 +22,10 @@ const errorReducer = (state = null, action: IAction<string>) => {
       return action.payload;
     case usersActions.login.Error.type:
       return action.payload;
+    case usersActions.logout.Error.type:
+      return action.payload;
+    case usersActions.currentUser.Error.type:
+      return action.payload;
 
     case boardsActions.fetchBoards.Error.type:
       return action.payload;

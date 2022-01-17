@@ -1,16 +1,11 @@
 import { usersActions } from "../actions";
-import { IAction } from "../../interfaces";
-
-interface IUsersState {
-  isAuthenticated: boolean;
-  name: string;
-  password: string;
-}
+import { IAction, IUsersState } from "../../interfaces";
 
 const initialState: IUsersState = {
   isAuthenticated: false,
   name: "",
-  password: "",
+  accessToken: "",
+  refreshToken: "",
 };
 
 const usersReducer = (state = initialState, action: IAction<{}>) => {
@@ -21,10 +16,20 @@ const usersReducer = (state = initialState, action: IAction<{}>) => {
     case usersActions.login.Success.type:
       return { ...action.payload, isAuthenticated: true };
 
+    case usersActions.logout.Success.type:
+      return initialState;
+
+    case usersActions.currentUser.Success.type:
+      return { ...action.payload, isAuthenticated: true };
+
     case usersActions.logup.Error.type:
-      return { ...action.payload, isAuthenticated: false };
+      return { isAuthenticated: false };
     case usersActions.login.Error.type:
-      return { ...action.payload, isAuthenticated: false };
+      return { isAuthenticated: false };
+    case usersActions.logout.Error.type:
+      return { isAuthenticated: false };
+    case usersActions.currentUser.Error.type:
+      return { isAuthenticated: false };
 
     default:
       return state;

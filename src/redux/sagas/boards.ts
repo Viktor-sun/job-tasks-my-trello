@@ -1,11 +1,11 @@
 import { put, takeEvery, call } from "redux-saga/effects";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { boardsActions } from "../actions";
-
-const api = () => axios.get("http://localhost:8050/api/board");
+import { customApi } from "../../helpers/axios";
 
 export function* fetchBoardsWorker() {
   try {
+    const api = () => customApi.get("/board");
     const data: AxiosResponse = yield call(api);
     yield put(boardsActions.fetchBoards.Success(data.data.data.boards));
   } catch (error: any) {
