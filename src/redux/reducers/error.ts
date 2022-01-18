@@ -30,6 +30,33 @@ const errorReducer = (state = null, action: IAction<string>) => {
     case boardsActions.fetchBoards.Error.type:
       return action.payload;
 
+    case boardActions.changeTitle.Success.type:
+      return null;
+    case boardActions.createColumn.Success.type:
+      return null;
+    case boardActions.addCard.Success.type:
+      return null;
+    case boardActions.deleteColumn.Success.type:
+      return null;
+    case boardActions.editCard.Success.type:
+      return null;
+    case boardActions.addLabel.Success.type:
+      return null;
+    case boardActions.changeCardOwner.Success.type:
+      return null;
+
+    case usersActions.logup.Success.type:
+      return null;
+    case usersActions.login.Success.type:
+      return null;
+    case usersActions.logout.Success.type:
+      return null;
+    case usersActions.currentUser.Success.type:
+      return null;
+
+    case boardsActions.fetchBoards.Success.type:
+      return null;
+
     default:
       return state;
   }

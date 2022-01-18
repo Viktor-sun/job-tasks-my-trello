@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
 import styled from "styled-components";
 import Modal from "../components/Modal";
 import FormCreateBoard from "../components/FormCreateBoard";
@@ -9,12 +8,10 @@ import Button from "../components/shared/Button";
 import AppBar from "../components/shared/AppBar";
 
 import { boardsActions } from "../redux/actions";
-import { boardsSelectors, usersSelectors } from "../redux/selectors";
-import { navRoutes } from "../routes";
+import { boardsSelectors } from "../redux/selectors";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(usersSelectors.getIsAuthenticated);
   const boards = useSelector(boardsSelectors.getBoards);
   const [showModal, setShowModal] = useState(false);
 
@@ -29,7 +26,6 @@ const Home = () => {
 
   return (
     <>
-      {!isAuthenticated && <Navigate to={navRoutes.login} />}
       <AppBar />
       <Wrapper>
         <Title text="hello" />
@@ -40,6 +36,7 @@ const Home = () => {
         >
           getBoards
         </button>
+
         <ul>
           {boards.map((board) => (
             <li key={board._id}>{board?.title}</li>

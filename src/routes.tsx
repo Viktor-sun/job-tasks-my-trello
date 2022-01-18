@@ -26,14 +26,17 @@ export const routes = [
   {
     path: navRoutes.home,
     component: <Home />,
+    restricted: true,
   },
   {
     path: navRoutes.board,
     component: <Board />,
+    restricted: true,
   },
   {
     path: navRoutes.card,
     component: <Card />,
+    restricted: true,
   },
   {
     path: navRoutes.notFound,

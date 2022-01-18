@@ -1,6 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import AuthFormContainer from "../shared/AuthFormContainer";
 import CustomInput from "../shared/CustomInput";
@@ -9,16 +8,12 @@ import Button from "../shared/Button";
 
 import { usersActions } from "../../redux/actions";
 import { loginValidSchema } from "../../validationSchemas";
-import { usersSelectors } from "../../redux/selectors";
-import { navRoutes } from "../../routes";
 
 const FormLogin = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(usersSelectors.getIsAuthenticated);
 
   return (
     <AuthFormContainer>
-      {isAuthenticated && <Navigate to={navRoutes.home} replace={true} />}
       <Formik
         initialValues={{
           login: "",

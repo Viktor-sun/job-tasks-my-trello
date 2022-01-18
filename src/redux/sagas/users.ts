@@ -9,15 +9,19 @@ interface ICredentials {
   password: string;
 }
 
+const api = (route: string, action: IAction<ICredentials>) =>
+  axios.post(
+    `http://localhost:8050/api/users${route}`,
+    {
+      name: action.payload.login,
+      password: action.payload.password,
+    },
+    { withCredentials: true }
+  );
+
 export function* logupWorker(action: IAction<ICredentials>) {
   try {
-    const api = () =>
-      axios.post("http://localhost:8050/api/users/signup", {
-        name: action.payload.login,
-        password: action.payload.password,
-      });
-
-    const data: AxiosResponse = yield call(api);
+    const data: AxiosResponse = yield call(api, "/signup", action);
     yield put(usersActions.logup.Success(data.data.data.user));
   } catch (error: any) {
     yield put(usersActions.logup.Error(error.message));
@@ -26,17 +30,7 @@ export function* logupWorker(action: IAction<ICredentials>) {
 
 export function* loginWorker(action: IAction<ICredentials>) {
   try {
-    const api = () =>
-      axios.post(
-        "http://localhost:8050/api/users/login",
-        {
-          name: action.payload.login,
-          password: action.payload.password,
-        },
-        { withCredentials: true }
-      );
-
-    const data: AxiosResponse = yield call(api);
+    const data: AxiosResponse = yield call(api, "/login", action);
     localStorage.setItem("token", data.data.data.accessToken);
 
     yield put(usersActions.login.Success(data.data.data));
@@ -47,9 +41,7 @@ export function* loginWorker(action: IAction<ICredentials>) {
 
 export function* logoutWorker() {
   try {
-    const api = () => customApi.post("/users/logout");
-
-    yield call(api);
+    yield call(customApi.post, "/users/logout");
     localStorage.removeItem("token");
     yield put(usersActions.logout.Success());
   } catch (error: any) {
@@ -59,10 +51,7 @@ export function* logoutWorker() {
 
 export function* currentUserWorker() {
   try {
-    const api = () => customApi.get("/users/current");
-
-    const data: AxiosResponse = yield call(api);
-
+    const data: AxiosResponse = yield call(customApi.get, "/users/current");
     yield put(usersActions.currentUser.Success(data.data.data.user));
   } catch (error: any) {
     yield put(usersActions.currentUser.Error(error.message));

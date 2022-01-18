@@ -1,6 +1,6 @@
 import { put, takeEvery, call } from "redux-saga/effects";
 import { AxiosResponse } from "axios";
-import { boardsActions } from "../actions";
+import { boardsActions, usersActions } from "../actions";
 import { customApi } from "../../helpers/axios";
 
 export function* fetchBoardsWorker() {
@@ -10,6 +10,7 @@ export function* fetchBoardsWorker() {
     yield put(boardsActions.fetchBoards.Success(data.data.data.boards));
   } catch (error: any) {
     yield put(boardsActions.fetchBoards.Error(error.message));
+    yield put(usersActions.logout.Success());
   }
 }
 
