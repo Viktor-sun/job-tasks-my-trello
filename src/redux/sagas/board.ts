@@ -1,13 +1,48 @@
-import { put, takeEvery } from "redux-saga/effects";
+import { put, takeEvery, call } from "redux-saga/effects";
+import { AxiosResponse } from "axios";
 import { boardActions } from "../actions";
 import { IAction } from "../../interfaces";
+import { customApi } from "../../helpers/axios";
 
-export function* changeTitleWorker(action: IAction<{}>) {
+export function* setBoardWorker(
+  action: IAction<{ _id: string; title: string; bgColor: string }>
+) {
   try {
-    // const data = yield call();
-    yield put(boardActions.changeTitle.Success(action.payload));
+    const boardId = action.payload._id;
+
+    const dataColumns: AxiosResponse = yield call(
+      customApi.get,
+      `/columns/${boardId}`
+    );
+
+    const columns = dataColumns.data.data.columns;
+
+    const dataLabels: AxiosResponse = yield call(
+      customApi.get,
+      `/labels/${boardId}`
+    );
+
+    const labels = dataLabels.data.data.labels;
+
+    const dataCards: AxiosResponse = yield call(
+      customApi.get,
+      `/cards/${boardId}`
+    );
+
+    const cards = dataCards.data.data.cards;
+
+    const payload = {
+      _id: action.payload._id,
+      title: action.payload.title,
+      bgColor: action.payload.bgColor,
+      columns,
+      cards,
+      labels,
+    };
+
+    yield put(boardActions.setBoard.Success(payload));
   } catch (error: any) {
-    yield put(boardActions.changeTitle.Error(error.message));
+    yield put(boardActions.setBoard.Error(error.message));
   }
 }
 
@@ -68,7 +103,7 @@ export function* changeCardOwnerWorker(action: IAction<{}>) {
 }
 
 export function* boardWatcher() {
-  yield takeEvery(boardActions.changeTitle.Request.type, changeTitleWorker);
+  yield takeEvery(boardActions.setBoard.Request.type, setBoardWorker);
   yield takeEvery(boardActions.createColumn.Request.type, createColumnWorker);
   yield takeEvery(boardActions.addCard.Request.type, addCardWorker);
   yield takeEvery(boardActions.deleteColumn.Request.type, deleteColumnWorker);

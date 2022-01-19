@@ -10,45 +10,13 @@ interface IReducerExtends {
 }
 
 const initialState: IBoardState = {
-  boardsDetails: { title: "", bgColor: "#aabbcc" },
+  id: "",
+  title: "",
+  bgColor: "",
 
-  columns: [
-    {
-      id: "RoBsqI1kp",
-      title: "col 1",
-    },
-    {
-      id: "4w5H6K8vy",
-      title: "col 2",
-    },
-  ],
-  cards: [
-    {
-      id: "aUF49QD-Z",
-      owner: "RoBsqI1kp",
-      date: new Date("2022-01-06T09:39:08"),
-      title: "card 2",
-      summary: "some summary",
-      description: "more description",
-      priority: "Low",
-      reporter: "viktor",
-      status: "Forgotten",
-      label: "#544128",
-    },
-    {
-      id: "CnnNlC1ZJl",
-      owner: "4w5H6K8vy",
-      date: new Date("2022-01-06T10:39:08"),
-      title: "card 1",
-      summary: "hello boy",
-      description: "some description",
-      priority: "Low",
-      reporter: "viktor",
-      status: "Forgotten",
-      label: "#a7a9c3",
-    },
-  ],
-  labels: ["#ffffff", "#544128", "#a7a9c3"],
+  columns: [],
+  cards: [],
+  labels: [],
 };
 
 const boardReducer = <A extends IReducerExtends>(
@@ -56,8 +24,8 @@ const boardReducer = <A extends IReducerExtends>(
   action: IAction<A>
 ) => {
   switch (action.type) {
-    case boardActions.changeTitle.Success.type:
-      return { ...state, boardsDetails: action.payload };
+    case boardActions.setBoard.Success.type:
+      return action.payload;
 
     case boardActions.createColumn.Success.type:
       return {

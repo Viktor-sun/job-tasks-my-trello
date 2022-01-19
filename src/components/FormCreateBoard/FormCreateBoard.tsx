@@ -11,7 +11,7 @@ import Button from "../shared/Button";
 
 import { onFormCreateBoard } from "../../validationSchemas";
 import { navRoutes } from "../../routes";
-import { boardActions } from "../../redux/actions";
+import { boardsActions } from "../../redux/actions";
 
 const FormCreateBoard = () => {
   const dispatch = useDispatch();
@@ -25,8 +25,8 @@ const FormCreateBoard = () => {
       }}
       validationSchema={onFormCreateBoard}
       onSubmit={({ title }) => {
-        dispatch(boardActions.changeTitle.Request({ title, bgColor: color }));
-        navigate(navRoutes.board);
+        dispatch(boardsActions.createBoard.Request({ title, bgColor: color }));
+        // navigate(navRoutes.board);
       }}
     >
       {() => (

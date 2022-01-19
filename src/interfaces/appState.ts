@@ -1,9 +1,9 @@
 import { IBoardState } from "./boardState";
-import { TBoards } from "./boardsState";
+import { IBoards } from "./boardsState";
 import { IUsersState } from "./userState";
 
 export interface IAppState {
-  boards: TBoards;
+  boards: IBoards[];
   board: IBoardState;
   user: IUsersState;
 }

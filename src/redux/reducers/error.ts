@@ -3,7 +3,7 @@ import { IAction } from "../../interfaces";
 
 const errorReducer = (state = null, action: IAction<string>) => {
   switch (action.type) {
-    case boardActions.changeTitle.Error.type:
+    case boardsActions.createBoard.Error.type:
       return action.payload;
     case boardActions.createColumn.Error.type:
       return action.payload;
@@ -30,7 +30,7 @@ const errorReducer = (state = null, action: IAction<string>) => {
     case boardsActions.fetchBoards.Error.type:
       return action.payload;
 
-    case boardActions.changeTitle.Success.type:
+    case boardsActions.createBoard.Success.type:
       return null;
     case boardActions.createColumn.Success.type:
       return null;

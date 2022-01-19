@@ -1,6 +1,6 @@
 import { createAsyncActions } from "../../utils/redux-tools";
 
-const changeTitle = createAsyncActions("board/changeTitle");
+const setBoard = createAsyncActions("board/setBoard");
 const createColumn = createAsyncActions("board/createColumn");
 const addCard = createAsyncActions("board/addCard");
 const deleteColumn = createAsyncActions("board/deleteColumn");
@@ -11,7 +11,7 @@ const editCard = createAsyncActions("card/editCard");
 
 // eslint-disable-next-line
 export default {
-  changeTitle,
+  setBoard,
   createColumn,
   addCard,
   deleteColumn,

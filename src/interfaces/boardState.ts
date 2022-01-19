@@ -1,5 +1,7 @@
 export interface IBoardState {
-  boardsDetails: { title: string; bgColor: string };
+  id: string;
+  title: string;
+  bgColor: string;
   columns: { id: string; title: string }[];
   cards: {
     id: string;

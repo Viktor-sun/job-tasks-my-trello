@@ -23,13 +23,13 @@ const usersReducer = (state = initialState, action: IAction<{}>) => {
       return { ...action.payload, isAuthenticated: true };
 
     case usersActions.logup.Error.type:
-      return { isAuthenticated: false };
+      return initialState;
     case usersActions.login.Error.type:
-      return { isAuthenticated: false };
+      return initialState;
     case usersActions.logout.Error.type:
-      return { isAuthenticated: false };
+      return initialState;
     case usersActions.currentUser.Error.type:
-      return { isAuthenticated: false };
+      return initialState;
 
     default:
       return state;

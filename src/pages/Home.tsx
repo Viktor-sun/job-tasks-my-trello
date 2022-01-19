@@ -1,23 +1,14 @@
-import { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useCallback } from "react";
 import styled from "styled-components";
 import Modal from "../components/Modal";
 import FormCreateBoard from "../components/FormCreateBoard";
 import Title from "../components/shared/Title";
 import Button from "../components/shared/Button";
 import AppBar from "../components/shared/AppBar";
-
-import { boardsActions } from "../redux/actions";
-import { boardsSelectors } from "../redux/selectors";
+import Boards from "../components/Boards";
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const boards = useSelector(boardsSelectors.getBoards);
   const [showModal, setShowModal] = useState(false);
-
-  // useEffect(() => {
-  //   dispatch(boardsActions.fetchBoards.Request());
-  // }, [dispatch]);
 
   const handleClick = useCallback(
     () => setShowModal((prevShowModal) => !prevShowModal),
@@ -30,18 +21,8 @@ const Home = () => {
       <Wrapper>
         <Title text="hello" />
         <Button name="create new board" type="button" onClick={handleClick} />
-        <button
-          type="button"
-          onClick={() => dispatch(boardsActions.fetchBoards.Request())}
-        >
-          getBoards
-        </button>
 
-        <ul>
-          {boards.map((board) => (
-            <li key={board._id}>{board?.title}</li>
-          ))}
-        </ul>
+        <Boards />
 
         {showModal && (
           <Modal onCloseModal={handleClick}>

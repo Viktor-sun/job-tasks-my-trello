@@ -1,4 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from "axios";
+import { store } from "../redux/store";
+import { usersActions } from "../redux/actions";
+import { IAction } from "../interfaces";
 
 const API_URL = "http://localhost:8050/api";
 
@@ -35,8 +38,8 @@ customApi.interceptors.response.use(
         localStorage.setItem("token", data.data.data.accessToken);
         return customApi.request(originalRequest);
       } catch (e) {
-        console.log(e);
-        console.log("unauthorized");
+        console.log("%cunauthorized\n", "color:tomato; font-size: 15px", e);
+        store.dispatch<IAction<any>>(usersActions.logout.Success());
       }
     }
 

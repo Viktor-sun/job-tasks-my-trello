@@ -1,1 +1,7 @@
-export type TBoards = { _id: string; title: string; bgColor: string }[];
+export interface IBoards {
+  _id: string;
+  title: string;
+  bgColor: string;
+  columns: [];
+  labels: [];
+}
