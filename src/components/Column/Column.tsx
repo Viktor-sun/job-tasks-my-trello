@@ -9,15 +9,15 @@ import { boardActions } from "../../redux/actions";
 import styled from "styled-components";
 
 interface IProps {
-  id: string;
+  _id: string;
   title: string;
 }
 
-const Column = ({ id, title }: IProps) => {
+const Column = ({ _id, title }: IProps) => {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
   const cards = useSelector(boardSelectors.getCards).filter(
-    (card) => card.owner === id
+    (card) => card.owner === _id
   );
 
   const toggleShowForm = useCallback(() => {
@@ -25,7 +25,7 @@ const Column = ({ id, title }: IProps) => {
   }, []);
 
   const handleDeleteColumn = () => {
-    dispatch(boardActions.deleteColumn.Request({ columnId: id }));
+    dispatch(boardActions.deleteColumn.Request(_id));
   };
 
   return (
@@ -38,7 +38,7 @@ const Column = ({ id, title }: IProps) => {
 
       {showForm && (
         <Modal onCloseModal={toggleShowForm}>
-          <FormAddCard onCloseForm={toggleShowForm} columnId={id} />
+          <FormAddCard onCloseForm={toggleShowForm} columnId={_id} />
         </Modal>
       )}
       <Cards cards={cards} />

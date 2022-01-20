@@ -9,7 +9,7 @@ const Columns = () => {
   return (
     <ColumnsWrapper>
       {columns.map((column) => (
-        <Column key={column.id} id={column.id} title={column.title} />
+        <Column key={column._id} _id={column._id} title={column.title} />
       ))}
     </ColumnsWrapper>
   );

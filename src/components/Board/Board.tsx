@@ -1,17 +1,17 @@
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { IBoards } from "../../interfaces";
-import { boardActions } from "../../redux/actions";
+import { navRoutes } from "../../routes";
 
 interface IProps {
   board: IBoards;
 }
 
 const Board = ({ board }: IProps) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    dispatch(boardActions.setBoard.Request(board));
+    navigate(`${navRoutes.home}/${board._id}`);
   };
 
   return <BoardItem onClick={handleClick}>{board.title}</BoardItem>;

@@ -11,29 +11,19 @@ import Button from "../shared/Button";
 import { boardActions } from "../../redux/actions";
 import { boardSelectors } from "../../redux/selectors";
 
-import { IValues } from "../../interfaces";
+import { IValuesForCardForms, ICard } from "../../interfaces";
 import { validationSchema } from "../../validationSchemas";
 
 interface IProps {
   onCloseForm: () => void;
-  card: {
-    id: string;
-    title: string | "";
-    summary: string | "";
-    description: string | "";
-    priority: string | "";
-    reporter: string | "";
-    status: string | "";
-    label: string | "";
-    date: Date;
-  };
+  card: ICard;
 }
 
 const FormAddCard = ({ onCloseForm, card }: IProps) => {
   const dispatch = useDispatch();
   const labels = useSelector(boardSelectors.getLabels);
 
-  const initialValues: IValues = {
+  const initialValues: IValuesForCardForms = {
     title: card.title,
     summary: card.summary,
     description: card.description,
@@ -43,17 +33,17 @@ const FormAddCard = ({ onCloseForm, card }: IProps) => {
     label: card.label,
   };
 
-  const handleSubmit = (values: IValues) => {
-    if (!labels.includes(values.label)) {
-      dispatch(boardActions.addLabel.Request(values.label));
-    }
+  const handleSubmit = (values: IValuesForCardForms) => {
+    // if (!labels.includes(values.label)) {
+    //   dispatch(boardActions.addLabel.Request(values.label));
+    // }
 
-    dispatch(
-      boardActions.editCard.Request({
-        id: card.id,
-        editedCard: { date: new Date(), ...values },
-      })
-    );
+    // dispatch(
+    //   boardActions.editCard.Request({
+    //     id: card.id,
+    //     editedCard: { date: new Date(), ...values },
+    //   })
+    // );
     onCloseForm();
   };
 

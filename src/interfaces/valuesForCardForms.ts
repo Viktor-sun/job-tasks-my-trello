@@ -1,4 +1,4 @@
-export interface IValues {
+export interface IValuesForCardForms {
   title: string;
   summary: string;
   description: string;

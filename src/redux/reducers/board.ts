@@ -1,5 +1,5 @@
 import { boardActions } from "../actions";
-import { IBoardState, IAction } from "../../interfaces";
+import { IBoard, IAction } from "../../interfaces";
 
 interface IReducerExtends {
   columnId: string;
@@ -9,8 +9,8 @@ interface IReducerExtends {
   editedCard: {};
 }
 
-const initialState: IBoardState = {
-  id: "",
+const initialState: IBoard = {
+  _id: "",
   title: "",
   bgColor: "",
 
@@ -24,7 +24,7 @@ const boardReducer = <A extends IReducerExtends>(
   action: IAction<A>
 ) => {
   switch (action.type) {
-    case boardActions.setBoard.Success.type:
+    case boardActions.fetchBoard.Success.type:
       return action.payload;
 
     case boardActions.createColumn.Success.type:
@@ -43,19 +43,19 @@ const boardReducer = <A extends IReducerExtends>(
       return {
         ...state,
         columns: state.columns.filter(
-          (column) => column.id !== action.payload.columnId
+          (column) => column._id !== action.payload.columnId
         ),
       };
 
     case boardActions.deleteCard.Success.type:
       return {
         ...state,
-        cards: state.cards.filter((card) => card.id !== action.payload.cardId),
+        cards: state.cards.filter((card) => card._id !== action.payload.cardId),
       };
 
     case boardActions.editCard.Success.type:
       const idx = state.cards.findIndex(
-        (card) => card.id === action.payload.id
+        (card) => card._id === action.payload.id
       );
       const newCards = [...state.cards];
 
@@ -71,6 +71,12 @@ const boardReducer = <A extends IReducerExtends>(
         cards: newCards,
       };
 
+    case boardActions.fetchLabels.Success.type:
+      return {
+        ...state,
+        labels: action.payload,
+      };
+
     case boardActions.addLabel.Success.type:
       return {
         ...state,
@@ -79,7 +85,7 @@ const boardReducer = <A extends IReducerExtends>(
 
     case boardActions.changeCardOwner.Success.type:
       const index = state.cards.findIndex(
-        (card) => card.id === action.payload.cardId
+        (card) => card._id === action.payload.cardId
       );
       const newCardsArr = [...state.cards];
       newCardsArr[index].owner = action.payload.columnId;

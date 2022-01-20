@@ -1,7 +1,7 @@
 import { usersActions } from "../actions";
-import { IAction, IUsersState } from "../../interfaces";
+import { IAction, IUser } from "../../interfaces";
 
-const initialState: IUsersState = {
+const initialState: IUser = {
   isAuthenticated: false,
   name: "",
   accessToken: "",

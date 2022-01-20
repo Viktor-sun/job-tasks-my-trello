@@ -26,7 +26,7 @@ const Home = () => {
 
         {showModal && (
           <Modal onCloseModal={handleClick}>
-            <FormCreateBoard />
+            <FormCreateBoard onCloseModal={handleClick} />
           </Modal>
         )}
       </Wrapper>

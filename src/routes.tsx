@@ -8,9 +8,9 @@ import NotFound from "./pages/NotFound";
 export const navRoutes = {
   logup: "/logup",
   login: "/login",
-  home: "/",
-  board: "/board",
-  card: "/board/:cardId",
+  home: "/boards",
+  board: "/boards/:boardId",
+  card: "/boards/:boardId/:cardId",
   notFound: "*",
 };
 

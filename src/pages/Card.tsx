@@ -24,11 +24,11 @@ const Card = () => {
   const { bgColor } = useSelector(boardSelectors.getBoardsDetails);
   const columns = useSelector(boardSelectors.getColumns);
   const cards = useSelector(boardSelectors.getCards);
-  const card = cards.find((card) => card.id === cardId);
+  const card = cards.find((card) => card._id === cardId);
 
   useEffect(() => {
     if (!card) {
-      navigate(navRoutes.board);
+      navigate(navRoutes.home);
     }
   }, [card, navigate]);
 
@@ -39,7 +39,7 @@ const Card = () => {
   const handleBack = () => navigate(-1);
 
   const handleDeleteCard = () => {
-    dispatch(boardActions.deleteCard.Request({ cardId }));
+    dispatch(boardActions.deleteCard.Request(cardId));
     navigate(-1);
   };
 
@@ -54,7 +54,7 @@ const Card = () => {
   );
 
   const currentColumn = columns.find(
-    (column) => column.id === card?.owner
+    (column) => column._id === card?.owner
   )?.title;
 
   return (
@@ -69,7 +69,7 @@ const Card = () => {
         {showMoveToColumn && (
           <Columns>
             {columns.map((column) => (
-              <Column key={column.id} onClick={handleMove(column.id)}>
+              <Column key={column._id} onClick={handleMove(column._id)}>
                 to: {column.title}
               </Column>
             ))}

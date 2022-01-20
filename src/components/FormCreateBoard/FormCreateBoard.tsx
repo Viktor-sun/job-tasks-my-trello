@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik, Field, Form } from "formik";
 import styled from "styled-components";
@@ -10,12 +9,14 @@ import CustomInput from "../shared/CustomInput";
 import Button from "../shared/Button";
 
 import { onFormCreateBoard } from "../../validationSchemas";
-import { navRoutes } from "../../routes";
 import { boardsActions } from "../../redux/actions";
 
-const FormCreateBoard = () => {
+interface IProps {
+  onCloseModal: () => void;
+}
+
+const FormCreateBoard = ({ onCloseModal }: IProps) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [color, setColor] = useState("#aabbcc");
 
   return (
@@ -26,7 +27,7 @@ const FormCreateBoard = () => {
       validationSchema={onFormCreateBoard}
       onSubmit={({ title }) => {
         dispatch(boardsActions.createBoard.Request({ title, bgColor: color }));
-        // navigate(navRoutes.board);
+        onCloseModal();
       }}
     >
       {() => (

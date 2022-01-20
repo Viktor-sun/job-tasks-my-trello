@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { navRoutes } from "../../routes";
 
 interface IProps {
   title: string;
@@ -9,18 +8,22 @@ interface IProps {
 }
 
 const Card = ({ title, cardId, label }: IProps) => {
+  const { pathname } = useLocation();
+
   return (
-    <Link
-      style={{ color: "inherit", textDecoration: "none" }}
-      to={`${navRoutes.board}/${cardId}`}
-    >
+    <StyledLink to={`${pathname}/${cardId}`}>
       <Item>
         {title}
         <Label bgColor={label}></Label>
       </Item>
-    </Link>
+    </StyledLink>
   );
 };
+
+const StyledLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
+`;
 
 const Item = styled.li`
   background-color: ${(props) => props.theme.colors.backgroundColor};

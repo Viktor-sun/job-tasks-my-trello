@@ -1,6 +1,5 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form } from "formik";
-import shortid from "shortid";
 import styled from "styled-components";
 
 import InputLabel from "../shared/InputLabel";
@@ -9,6 +8,7 @@ import Button from "../shared/Button";
 
 import { onFormAddColumn } from "../../validationSchemas";
 import { boardActions } from "../../redux/actions";
+import { boardSelectors } from "../../redux/selectors";
 
 interface IProps {
   onCloseForm: () => void;
@@ -16,6 +16,7 @@ interface IProps {
 
 const FormAddList = ({ onCloseForm }: IProps) => {
   const dispatch = useDispatch();
+  const boardId = useSelector(boardSelectors.getBoardId);
 
   return (
     <Formik
@@ -24,12 +25,7 @@ const FormAddList = ({ onCloseForm }: IProps) => {
       }}
       validationSchema={onFormAddColumn}
       onSubmit={({ column }) => {
-        dispatch(
-          boardActions.createColumn.Request({
-            id: shortid.generate(),
-            title: column,
-          })
-        );
+        dispatch(boardActions.createColumn.Request({ boardId, title: column }));
         onCloseForm();
       }}
     >

@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, FastField, Form } from "formik";
-import shortid from "shortid";
 
 import InputLabel from "../shared/InputLabel";
 import CustomInput from "../shared/CustomInput";
@@ -12,7 +12,7 @@ import Button from "../shared/Button";
 import { boardActions } from "../../redux/actions";
 import { boardSelectors } from "../../redux/selectors";
 
-import { IValues } from "../../interfaces";
+import { IValuesForCardForms } from "../../interfaces";
 import { validationSchema } from "../../validationSchemas";
 
 interface IProps {
@@ -22,9 +22,14 @@ interface IProps {
 
 const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
   const dispatch = useDispatch();
+  const boardId = useSelector(boardSelectors.getBoardId);
   const labels = useSelector(boardSelectors.getLabels);
 
-  const initialValues: IValues = {
+  useEffect(() => {
+    dispatch(boardActions.fetchLabels.Request(boardId));
+  }, [dispatch, boardId]);
+
+  const initialValues: IValuesForCardForms = {
     title: "",
     summary: "",
     description: "",
@@ -34,19 +39,20 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
     label: "#ffffff",
   };
 
-  const handleSubmit = (values: IValues) => {
-    if (!labels.includes(values.label)) {
-      dispatch(boardActions.addLabel.Request(values.label));
+  const handleSubmit = (values: IValuesForCardForms) => {
+    const hasLabel = labels.find(({ label }) => label === values.label);
+    if (!hasLabel) {
+      dispatch(boardActions.addLabel.Request({ boardId, label: values.label }));
     }
 
-    dispatch(
-      boardActions.addCard.Request({
-        id: shortid.generate(),
-        owner: columnId,
-        date: new Date(),
-        ...values,
-      })
-    );
+    const card = {
+      boardId,
+      owner: columnId,
+      date: new Date(),
+      ...values,
+    };
+
+    dispatch(boardActions.addCard.Request(card));
     onCloseForm();
   };
 
@@ -104,7 +110,11 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
           </InputLabel>
 
           <InputLabel label="Label">
-            <FastField name="label" options={labels} as={CustomColorSelect} />
+            <FastField
+              name="label"
+              options={labels ? labels.map(({ label }) => label) : []}
+              as={CustomColorSelect}
+            />
           </InputLabel>
 
           <Button type="submit" name="Create card" />

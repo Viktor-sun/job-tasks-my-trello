@@ -1,7 +1,8 @@
-export type { IBoardState } from "./boardState";
+export type { IBoard } from "./boardTypes";
 export type { IAction } from "./action";
-export type { IValues } from "./cardFormValues";
-export type { IBoards } from "./boardsState";
-export type { IAppState } from "./appState";
-export type { IUsersState } from "./userState";
-export type { ILocationState } from "./locationState";
+export type { IValuesForCardForms } from "./valuesForCardForms";
+export type { IBoards } from "./boardsTypes";
+export type { IApp } from "./appTypes";
+export type { IUser } from "./userTypes";
+export type { ILocation } from "./locationTypes";
+export type { ICard } from "./cardTypes";

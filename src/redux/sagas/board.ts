@@ -1,78 +1,95 @@
 import { put, takeEvery, call } from "redux-saga/effects";
 import { AxiosResponse } from "axios";
 import { boardActions } from "../actions";
-import { IAction } from "../../interfaces";
+import { IAction, ICard } from "../../interfaces";
 import { customApi } from "../../helpers/axios";
 
-export function* setBoardWorker(
-  action: IAction<{ _id: string; title: string; bgColor: string }>
-) {
+export function* fetchBoardWorker(action: IAction<string>) {
   try {
-    const boardId = action.payload._id;
+    const boardId = action.payload;
+
+    const dataBoard: AxiosResponse = yield call(
+      customApi.get,
+      `/boards/${boardId}`
+    );
 
     const dataColumns: AxiosResponse = yield call(
       customApi.get,
       `/columns/${boardId}`
     );
 
-    const columns = dataColumns.data.data.columns;
-
-    const dataLabels: AxiosResponse = yield call(
-      customApi.get,
-      `/labels/${boardId}`
-    );
-
-    const labels = dataLabels.data.data.labels;
-
     const dataCards: AxiosResponse = yield call(
       customApi.get,
       `/cards/${boardId}`
     );
 
+    const { _id, title, bgColor } = dataBoard.data.data.board;
+    const columns = dataColumns.data.data.columns;
     const cards = dataCards.data.data.cards;
 
     const payload = {
-      _id: action.payload._id,
-      title: action.payload.title,
-      bgColor: action.payload.bgColor,
+      _id,
+      title,
+      bgColor,
       columns,
       cards,
-      labels,
+      labels: [],
     };
 
-    yield put(boardActions.setBoard.Success(payload));
+    yield put(boardActions.fetchBoard.Success(payload));
   } catch (error: any) {
-    yield put(boardActions.setBoard.Error(error.message));
+    yield put(boardActions.fetchBoard.Error(error.message));
   }
 }
 
-export function* createColumnWorker(action: IAction<{}>) {
+export function* createColumnWorker(
+  action: IAction<{ boardId: string; title: string }>
+) {
   try {
-    yield put(boardActions.createColumn.Success(action.payload));
+    const { boardId, title } = action.payload;
+    const data: AxiosResponse = yield call(
+      customApi.post,
+      `columns/${boardId}`,
+      { title }
+    );
+
+    yield put(boardActions.createColumn.Success(data.data.data.column));
   } catch (error: any) {
     yield put(boardActions.createColumn.Error(error.message));
   }
 }
 
-export function* addCardWorker(action: IAction<{}>) {
+export function* addCardWorker(action: IAction<ICard>) {
   try {
-    yield put(boardActions.addCard.Success(action.payload));
+    const { boardId, owner: columnId } = action.payload;
+
+    const data: AxiosResponse = yield call(
+      customApi.post,
+      `cards/${boardId}/${columnId}`,
+      action.payload
+    );
+    yield put(boardActions.addCard.Success(data.data.data.card));
   } catch (error: any) {
     yield put(boardActions.addCard.Error(error.message));
   }
 }
 
-export function* deleteColumnWorker(action: IAction<{}>) {
+export function* deleteColumnWorker(action: IAction<string>) {
   try {
-    yield put(boardActions.deleteColumn.Success(action.payload));
+    const columnId = action.payload;
+    yield call(customApi.delete, `columns/${columnId}`);
+
+    yield put(boardActions.deleteColumn.Success({ columnId }));
   } catch (error: any) {
     yield put(boardActions.deleteColumn.Error(error.message));
   }
 }
 
-export function* deleteCardWorker(action: IAction<{}>) {
+export function* deleteCardWorker(action: IAction<string>) {
   try {
-    yield put(boardActions.deleteCard.Success(action.payload));
+    const cardId = action.payload;
+    yield call(customApi.delete, `cards/${cardId}`);
+    yield put(boardActions.deleteCard.Success({ cardId }));
   } catch (error: any) {
     yield put(boardActions.deleteCard.Error(error.message));
   }
@@ -86,9 +103,29 @@ export function* editCardWorker(action: IAction<{}>) {
   }
 }
 
-export function* addLabelWorker(action: IAction<{}>) {
+export function* fetchLabelsWorker(action: IAction<string>) {
   try {
-    yield put(boardActions.addLabel.Success(action.payload));
+    const boardId = action.payload;
+    const data: AxiosResponse = yield call(customApi.get, `/labels/${boardId}`);
+
+    yield put(boardActions.fetchLabels.Success(data.data.data.labels));
+  } catch (error: any) {
+    yield put(boardActions.fetchLabels.Error(error.message));
+  }
+}
+
+export function* addLabelWorker(
+  action: IAction<{ boardId: string; label: string }>
+) {
+  try {
+    const { boardId, label } = action.payload;
+    const data: AxiosResponse = yield call(
+      customApi.post,
+      `labels/${boardId}`,
+      { label }
+    );
+
+    yield put(boardActions.addLabel.Success(data.data.data.label));
   } catch (error: any) {
     yield put(boardActions.addLabel.Error(error.message));
   }
@@ -103,12 +140,13 @@ export function* changeCardOwnerWorker(action: IAction<{}>) {
 }
 
 export function* boardWatcher() {
-  yield takeEvery(boardActions.setBoard.Request.type, setBoardWorker);
+  yield takeEvery(boardActions.fetchBoard.Request.type, fetchBoardWorker);
   yield takeEvery(boardActions.createColumn.Request.type, createColumnWorker);
   yield takeEvery(boardActions.addCard.Request.type, addCardWorker);
   yield takeEvery(boardActions.deleteColumn.Request.type, deleteColumnWorker);
   yield takeEvery(boardActions.deleteCard.Request.type, deleteCardWorker);
   yield takeEvery(boardActions.editCard.Request.type, editCardWorker);
+  yield takeEvery(boardActions.fetchLabels.Request.type, fetchLabelsWorker);
   yield takeEvery(boardActions.addLabel.Request.type, addLabelWorker);
   yield takeEvery(
     boardActions.changeCardOwner.Request.type,

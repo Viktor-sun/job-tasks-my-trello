@@ -2,7 +2,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { usersSelectors } from "../../redux/selectors";
 import { navRoutes } from "../../routes";
-import { ILocationState } from "../../interfaces";
+import { ILocation } from "../../interfaces";
 
 interface IProps {
   restricted?: boolean;
@@ -13,7 +13,7 @@ interface IProps {
 const ProtectedRoute = ({ component, restricted, path }: IProps) => {
   const isAuth = useSelector(usersSelectors.getIsAuthenticated);
   const location = useLocation();
-  const from = (location.state as ILocationState)?.from || navRoutes.home;
+  const from = (location.state as ILocation)?.from || navRoutes.home;
 
   if (path === navRoutes.notFound) {
     return component;
