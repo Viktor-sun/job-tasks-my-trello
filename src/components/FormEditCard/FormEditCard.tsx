@@ -1,5 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Formik, FastField, Form } from "formik";
+import { useParams } from "react-router-dom";
 
 import InputLabel from "../shared/InputLabel";
 import CustomInput from "../shared/CustomInput";
@@ -8,20 +9,20 @@ import CustomSelect from "../shared/CustomSelect";
 import CustomColorSelect from "../shared/CustomColorSelect";
 import Button from "../shared/Button";
 
-import { boardActions } from "../../redux/actions";
-import { boardSelectors } from "../../redux/selectors";
+import { boardActions, cardsActions } from "../../redux/actions";
 
-import { IValuesForCardForms, ICard } from "../../interfaces";
+import { IValuesForCardForms, ICard, ILabels } from "../../interfaces";
 import { validationSchema } from "../../validationSchemas";
 
 interface IProps {
   onCloseForm: () => void;
   card: ICard;
+  labels: ILabels[];
 }
 
-const FormAddCard = ({ onCloseForm, card }: IProps) => {
+const FormEditCard = ({ onCloseForm, card, labels }: IProps) => {
   const dispatch = useDispatch();
-  const labels = useSelector(boardSelectors.getLabels);
+  const { boardId } = useParams();
 
   const initialValues: IValuesForCardForms = {
     title: card.title,
@@ -34,16 +35,17 @@ const FormAddCard = ({ onCloseForm, card }: IProps) => {
   };
 
   const handleSubmit = (values: IValuesForCardForms) => {
-    // if (!labels.includes(values.label)) {
-    //   dispatch(boardActions.addLabel.Request(values.label));
-    // }
+    const hasLabel = labels.find(({ label }) => label === values.label);
+    if (!hasLabel) {
+      dispatch(boardActions.addLabel.Request({ boardId, label: values.label }));
+    }
 
-    // dispatch(
-    //   boardActions.editCard.Request({
-    //     id: card.id,
-    //     editedCard: { date: new Date(), ...values },
-    //   })
-    // );
+    dispatch(
+      cardsActions.editCard.Request({
+        editedCard: { date: new Date(), ...values },
+        cardId: card._id,
+      })
+    );
     onCloseForm();
   };
 
@@ -101,7 +103,11 @@ const FormAddCard = ({ onCloseForm, card }: IProps) => {
           </InputLabel>
 
           <InputLabel label="Label">
-            <FastField name="label" options={labels} as={CustomColorSelect} />
+            <FastField
+              name="label"
+              options={labels.map(({ label }) => label)}
+              as={CustomColorSelect}
+            />
           </InputLabel>
 
           <Button type="submit" name="Save changes" />
@@ -111,4 +117,4 @@ const FormAddCard = ({ onCloseForm, card }: IProps) => {
   );
 };
 
-export default FormAddCard;
+export default FormEditCard;

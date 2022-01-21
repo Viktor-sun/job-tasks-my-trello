@@ -1,4 +1,9 @@
-import { boardActions, usersActions, boardsActions } from "../actions";
+import {
+  boardActions,
+  usersActions,
+  boardsActions,
+  cardsActions,
+} from "../actions";
 import { IAction } from "../../interfaces";
 
 const errorReducer = (state = null, action: IAction<string>) => {
@@ -7,11 +12,11 @@ const errorReducer = (state = null, action: IAction<string>) => {
       return action.payload;
     case boardActions.createColumn.Error.type:
       return action.payload;
-    case boardActions.addCard.Error.type:
+    case cardsActions.addCard.Error.type:
       return action.payload;
     case boardActions.deleteColumn.Error.type:
       return action.payload;
-    case boardActions.editCard.Error.type:
+    case cardsActions.editCard.Error.type:
       return action.payload;
     case boardActions.addLabel.Error.type:
       return action.payload;
@@ -34,11 +39,11 @@ const errorReducer = (state = null, action: IAction<string>) => {
       return null;
     case boardActions.createColumn.Success.type:
       return null;
-    case boardActions.addCard.Success.type:
+    case cardsActions.addCard.Success.type:
       return null;
     case boardActions.deleteColumn.Success.type:
       return null;
-    case boardActions.editCard.Success.type:
+    case cardsActions.editCard.Success.type:
       return null;
     case boardActions.addLabel.Success.type:
       return null;

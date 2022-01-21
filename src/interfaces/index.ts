@@ -6,3 +6,4 @@ export type { IApp } from "./appTypes";
 export type { IUser } from "./userTypes";
 export type { ILocation } from "./locationTypes";
 export type { ICard } from "./cardTypes";
+export type { ILabels } from "./labelsTytpes";

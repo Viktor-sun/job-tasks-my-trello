@@ -9,37 +9,36 @@ import Layout from "../components/Layout";
 import Title from "../components/shared/Title";
 import Button from "../components/shared/Button";
 
-import { boardSelectors } from "../redux/selectors";
-import { boardActions } from "../redux/actions";
+import { cardsSelectors, boardSelectors } from "../redux/selectors";
+import { boardActions, cardsActions } from "../redux/actions";
 import { navRoutes } from "../routes";
 
 const Card = () => {
   const dispatch = useDispatch();
-  const { cardId } = useParams();
+  const { boardId, cardId } = useParams();
   const navigate = useNavigate();
+
+  const columns = useSelector(boardSelectors.getColumns);
+  const card = useSelector(cardsSelectors.getCard);
+  const labels = useSelector(boardSelectors.getLabels);
 
   const [showForm, setShowForm] = useState(false);
   const [showMoveToColumn, setShowMoveToColumn] = useState(false);
 
-  const { bgColor } = useSelector(boardSelectors.getBoardsDetails);
-  const columns = useSelector(boardSelectors.getColumns);
-  const cards = useSelector(boardSelectors.getCards);
-  const card = cards.find((card) => card._id === cardId);
-
   useEffect(() => {
-    if (!card) {
-      navigate(navRoutes.home);
-    }
-  }, [card, navigate]);
+    dispatch(cardsActions.fetchCard.Request(cardId));
+    dispatch(boardActions.fetchLabels.Request(boardId));
+    dispatch(boardActions.fetchColumns.Request(boardId));
+  }, [cardId, boardId, dispatch]);
 
   const toggleShowForm = useCallback(() => {
     setShowForm((prevShow) => !prevShow);
   }, []);
 
-  const handleBack = () => navigate(-1);
+  const handleBack = () => navigate(`${navRoutes.home}/${boardId}`);
 
   const handleDeleteCard = () => {
-    dispatch(boardActions.deleteCard.Request(cardId));
+    dispatch(cardsActions.deleteCard.Request(cardId));
     navigate(-1);
   };
 
@@ -47,18 +46,18 @@ const Card = () => {
 
   const handleMove = useCallback(
     (columnId: string) => () => {
-      dispatch(boardActions.changeCardOwner.Request({ cardId, columnId }));
+      dispatch(cardsActions.changeCardOwner.Request({ cardId, columnId }));
       handleShowMoveToColumn();
     },
     [cardId, dispatch]
   );
 
   const currentColumn = columns.find(
-    (column) => column._id === card?.owner
+    (column) => column._id === card.owner
   )?.title;
 
   return (
-    <Layout bgColor={bgColor}>
+    <Layout>
       <Container>
         <ButtonContainer>
           <Button type="button" name="back" onClick={handleBack} />
@@ -76,21 +75,25 @@ const Card = () => {
           </Columns>
         )}
         <CurrentColumn>in column {currentColumn}</CurrentColumn>
-        <Title text={card?.title} />
-        <Label bgColor={card?.label} />
+        <Title text={card.title} />
+        <Label bgColor={card.label} />
 
         <DetailsList>
-          <Item>Summary: {card?.summary}</Item>
-          <Item>Description: {card?.description}</Item>
-          <Item>Priority: {card?.priority}</Item>
-          <Item>Reporter: {card?.reporter}</Item>
-          <Item>Status: {card?.status}</Item>
-          <Item>Date: {card?.date.toLocaleString()}</Item>
+          <Item>Summary: {card.summary}</Item>
+          <Item>Description: {card.description}</Item>
+          <Item>Priority: {card.priority}</Item>
+          <Item>Reporter: {card.reporter}</Item>
+          <Item>Status: {card.status}</Item>
+          <Item>Date: {card.date.toLocaleString()}</Item>
         </DetailsList>
 
-        {showForm && card && (
+        {showForm && (
           <Modal onCloseModal={toggleShowForm}>
-            <FormEditCard onCloseForm={toggleShowForm} card={card} />
+            <FormEditCard
+              onCloseForm={toggleShowForm}
+              card={card}
+              labels={labels}
+            />
           </Modal>
         )}
 

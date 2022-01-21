@@ -1,24 +1,20 @@
 import { createAsyncActions } from "../../utils/redux-tools";
 
-const fetchBoard = createAsyncActions("board/fetchBoard");
-const createColumn = createAsyncActions("board/createColumn");
-const deleteColumn = createAsyncActions("board/deleteColumn");
-
+const fetchCard = createAsyncActions("card/fetchCard");
 const addCard = createAsyncActions("card/addCard");
-
+const deleteCard = createAsyncActions("card/deleteCard");
 const fetchLabels = createAsyncActions("card/fetchLabels");
 const addLabel = createAsyncActions("card/addLabel");
-const fetchColumns = createAsyncActions("columns/fetchColumns");
 const changeCardOwner = createAsyncActions("card/changeCardOwner");
+const editCard = createAsyncActions("card/editCard");
 
 // eslint-disable-next-line
 export default {
-  fetchBoard,
-  createColumn,
+  fetchCard,
   addCard,
-  deleteColumn,
+  deleteCard,
   fetchLabels,
   addLabel,
-  fetchColumns,
   changeCardOwner,
+  editCard,
 };

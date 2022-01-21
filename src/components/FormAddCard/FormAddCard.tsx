@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, FastField, Form } from "formik";
 
@@ -24,10 +23,6 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
   const dispatch = useDispatch();
   const boardId = useSelector(boardSelectors.getBoardId);
   const labels = useSelector(boardSelectors.getLabels);
-
-  useEffect(() => {
-    dispatch(boardActions.fetchLabels.Request(boardId));
-  }, [dispatch, boardId]);
 
   const initialValues: IValuesForCardForms = {
     title: "",
@@ -112,7 +107,7 @@ const FormAddCard = ({ onCloseForm, columnId }: IProps) => {
           <InputLabel label="Label">
             <FastField
               name="label"
-              options={labels ? labels.map(({ label }) => label) : []}
+              options={labels.map(({ label }) => label)}
               as={CustomColorSelect}
             />
           </InputLabel>

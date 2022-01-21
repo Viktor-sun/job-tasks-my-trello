@@ -23,9 +23,15 @@ export function* fetchBoardWorker(action: IAction<string>) {
       `/cards/${boardId}`
     );
 
+    const dataLabels: AxiosResponse = yield call(
+      customApi.get,
+      `/labels/${boardId}`
+    );
+
     const { _id, title, bgColor } = dataBoard.data.data.board;
     const columns = dataColumns.data.data.columns;
     const cards = dataCards.data.data.cards;
+    const labels = dataLabels.data.data.labels;
 
     const payload = {
       _id,
@@ -33,7 +39,7 @@ export function* fetchBoardWorker(action: IAction<string>) {
       bgColor,
       columns,
       cards,
-      labels: [],
+      labels,
     };
 
     yield put(boardActions.fetchBoard.Success(payload));
@@ -65,7 +71,7 @@ export function* addCardWorker(action: IAction<ICard>) {
 
     const data: AxiosResponse = yield call(
       customApi.post,
-      `cards/${boardId}/${columnId}`,
+      `cards/${boardId}/${columnId}/add`,
       action.payload
     );
     yield put(boardActions.addCard.Success(data.data.data.card));
@@ -82,24 +88,6 @@ export function* deleteColumnWorker(action: IAction<string>) {
     yield put(boardActions.deleteColumn.Success({ columnId }));
   } catch (error: any) {
     yield put(boardActions.deleteColumn.Error(error.message));
-  }
-}
-
-export function* deleteCardWorker(action: IAction<string>) {
-  try {
-    const cardId = action.payload;
-    yield call(customApi.delete, `cards/${cardId}`);
-    yield put(boardActions.deleteCard.Success({ cardId }));
-  } catch (error: any) {
-    yield put(boardActions.deleteCard.Error(error.message));
-  }
-}
-
-export function* editCardWorker(action: IAction<{}>) {
-  try {
-    yield put(boardActions.editCard.Success(action.payload));
-  } catch (error: any) {
-    yield put(boardActions.editCard.Error(error.message));
   }
 }
 
@@ -131,11 +119,17 @@ export function* addLabelWorker(
   }
 }
 
-export function* changeCardOwnerWorker(action: IAction<{}>) {
+export function* fetchColumnsWorker(action: IAction<string>) {
   try {
-    yield put(boardActions.changeCardOwner.Success(action.payload));
+    const boardId = action.payload;
+    const data: AxiosResponse = yield call(
+      customApi.get,
+      `/columns/${boardId}`
+    );
+
+    yield put(boardActions.fetchColumns.Success(data.data.data.columns));
   } catch (error: any) {
-    yield put(boardActions.changeCardOwner.Error(error.message));
+    yield put(boardActions.fetchColumns.Error(error.message));
   }
 }
 
@@ -144,12 +138,7 @@ export function* boardWatcher() {
   yield takeEvery(boardActions.createColumn.Request.type, createColumnWorker);
   yield takeEvery(boardActions.addCard.Request.type, addCardWorker);
   yield takeEvery(boardActions.deleteColumn.Request.type, deleteColumnWorker);
-  yield takeEvery(boardActions.deleteCard.Request.type, deleteCardWorker);
-  yield takeEvery(boardActions.editCard.Request.type, editCardWorker);
   yield takeEvery(boardActions.fetchLabels.Request.type, fetchLabelsWorker);
   yield takeEvery(boardActions.addLabel.Request.type, addLabelWorker);
-  yield takeEvery(
-    boardActions.changeCardOwner.Request.type,
-    changeCardOwnerWorker
-  );
+  yield takeEvery(boardActions.fetchColumns.Request.type, fetchColumnsWorker);
 }
